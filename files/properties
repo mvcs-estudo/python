@@ -1,0 +1,11 @@
+[FIRST_LEVEL_SECTION]
+[FIRST_LEVEL_SECTION|SECOND_LEVEL_SECTION]
+    CELL_NAME=cell_name_smart
+    NODE_NAME=node_name_smart
+    APP_NAME=app_name_smart
+    SERVER_NAME=server_name_smart
+
+[FIRST_LEVEL_SECTION|SECOND_LEVEL_SECTION|THIRD_LEVEL_SECTION]
+    module1=apllication.jar,META-INF/ejb-jar.xml
+    module2=apllication.war,/WEB-INF/web.xml
+    module3=application-rs.war,META-INF/xml.xml

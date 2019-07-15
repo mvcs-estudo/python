@@ -1,0 +1,1412 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module configparser</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>configparser</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:///D:/developer/tools/portablepython/app/lib/configparser.py">d:\developer\tools\portablepython\app\lib\configparser.py</a></font></td></tr></table>
+    <p><tt>Configuration&nbsp;file&nbsp;parser.<br>
+&nbsp;<br>
+A&nbsp;configuration&nbsp;file&nbsp;consists&nbsp;of&nbsp;sections,&nbsp;lead&nbsp;by&nbsp;a&nbsp;"[section]"&nbsp;header,<br>
+and&nbsp;followed&nbsp;by&nbsp;"name:&nbsp;value"&nbsp;entries,&nbsp;with&nbsp;continuations&nbsp;and&nbsp;such&nbsp;in<br>
+the&nbsp;style&nbsp;of&nbsp;<a href="http://www.rfc-editor.org/rfc/rfc822.txt">RFC&nbsp;822</a>.<br>
+&nbsp;<br>
+Intrinsic&nbsp;defaults&nbsp;can&nbsp;be&nbsp;specified&nbsp;by&nbsp;passing&nbsp;them&nbsp;into&nbsp;the<br>
+<a href="#ConfigParser">ConfigParser</a>&nbsp;constructor&nbsp;as&nbsp;a&nbsp;dictionary.<br>
+&nbsp;<br>
+class:<br>
+&nbsp;<br>
+<a href="#ConfigParser">ConfigParser</a>&nbsp;--&nbsp;responsible&nbsp;for&nbsp;parsing&nbsp;a&nbsp;list&nbsp;of<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;configuration&nbsp;files,&nbsp;and&nbsp;managing&nbsp;the&nbsp;parsed&nbsp;database.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;methods:<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;__init__(defaults=None,&nbsp;dict_type=_default_dict,&nbsp;allow_no_value=False,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delimiters=('=',&nbsp;':'),&nbsp;comment_prefixes=('#',&nbsp;';'),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inline_comment_prefixes=None,&nbsp;strict=True,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;empty_lines_in_values=True):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Create&nbsp;the&nbsp;parser.&nbsp;When&nbsp;`defaults'&nbsp;is&nbsp;given,&nbsp;it&nbsp;is&nbsp;initialized&nbsp;into&nbsp;the<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dictionary&nbsp;or&nbsp;intrinsic&nbsp;defaults.&nbsp;The&nbsp;keys&nbsp;must&nbsp;be&nbsp;strings,&nbsp;the&nbsp;values<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;must&nbsp;be&nbsp;appropriate&nbsp;for&nbsp;%()s&nbsp;string&nbsp;interpolation.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When&nbsp;`dict_type'&nbsp;is&nbsp;given,&nbsp;it&nbsp;will&nbsp;be&nbsp;used&nbsp;to&nbsp;create&nbsp;the&nbsp;dictionary<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;objects&nbsp;for&nbsp;the&nbsp;list&nbsp;of&nbsp;sections,&nbsp;for&nbsp;the&nbsp;options&nbsp;within&nbsp;a&nbsp;section,&nbsp;and<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;the&nbsp;default&nbsp;values.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When&nbsp;`delimiters'&nbsp;is&nbsp;given,&nbsp;it&nbsp;will&nbsp;be&nbsp;used&nbsp;as&nbsp;the&nbsp;set&nbsp;of&nbsp;substrings<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;that&nbsp;divide&nbsp;keys&nbsp;from&nbsp;values.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When&nbsp;`comment_prefixes'&nbsp;is&nbsp;given,&nbsp;it&nbsp;will&nbsp;be&nbsp;used&nbsp;as&nbsp;the&nbsp;set&nbsp;of<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;substrings&nbsp;that&nbsp;prefix&nbsp;comments&nbsp;in&nbsp;empty&nbsp;lines.&nbsp;Comments&nbsp;can&nbsp;be<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;indented.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When&nbsp;`inline_comment_prefixes'&nbsp;is&nbsp;given,&nbsp;it&nbsp;will&nbsp;be&nbsp;used&nbsp;as&nbsp;the&nbsp;set&nbsp;of<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;substrings&nbsp;that&nbsp;prefix&nbsp;comments&nbsp;in&nbsp;non-empty&nbsp;lines.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When&nbsp;`strict`&nbsp;is&nbsp;True,&nbsp;the&nbsp;parser&nbsp;won't&nbsp;allow&nbsp;for&nbsp;any&nbsp;section&nbsp;or&nbsp;option<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;duplicates&nbsp;while&nbsp;reading&nbsp;from&nbsp;a&nbsp;single&nbsp;source&nbsp;(file,&nbsp;string&nbsp;or<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dictionary).&nbsp;Default&nbsp;is&nbsp;True.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When&nbsp;`empty_lines_in_values'&nbsp;is&nbsp;False&nbsp;(default:&nbsp;True),&nbsp;each&nbsp;empty&nbsp;line<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;marks&nbsp;the&nbsp;end&nbsp;of&nbsp;an&nbsp;option.&nbsp;Otherwise,&nbsp;internal&nbsp;empty&nbsp;lines&nbsp;of<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;multiline&nbsp;option&nbsp;are&nbsp;kept&nbsp;as&nbsp;part&nbsp;of&nbsp;the&nbsp;value.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When&nbsp;`allow_no_value'&nbsp;is&nbsp;True&nbsp;(default:&nbsp;False),&nbsp;options&nbsp;without<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;values&nbsp;are&nbsp;accepted;&nbsp;the&nbsp;value&nbsp;presented&nbsp;for&nbsp;these&nbsp;is&nbsp;None.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;sections()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Return&nbsp;all&nbsp;the&nbsp;configuration&nbsp;section&nbsp;names,&nbsp;sans&nbsp;DEFAULT.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;has_section(section)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Return&nbsp;whether&nbsp;the&nbsp;given&nbsp;section&nbsp;exists.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;has_option(section,&nbsp;option)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Return&nbsp;whether&nbsp;the&nbsp;given&nbsp;option&nbsp;exists&nbsp;in&nbsp;the&nbsp;given&nbsp;section.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;options(section)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Return&nbsp;list&nbsp;of&nbsp;configuration&nbsp;options&nbsp;for&nbsp;the&nbsp;named&nbsp;section.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;read(filenames,&nbsp;encoding=None)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Read&nbsp;and&nbsp;parse&nbsp;the&nbsp;list&nbsp;of&nbsp;named&nbsp;configuration&nbsp;files,&nbsp;given&nbsp;by<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name.&nbsp;&nbsp;A&nbsp;single&nbsp;filename&nbsp;is&nbsp;also&nbsp;allowed.&nbsp;&nbsp;Non-existing&nbsp;files<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;are&nbsp;ignored.&nbsp;&nbsp;Return&nbsp;list&nbsp;of&nbsp;successfully&nbsp;read&nbsp;files.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;read_file(f,&nbsp;filename=None)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Read&nbsp;and&nbsp;parse&nbsp;one&nbsp;configuration&nbsp;file,&nbsp;given&nbsp;as&nbsp;a&nbsp;file&nbsp;object.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;filename&nbsp;defaults&nbsp;to&nbsp;f.name;&nbsp;it&nbsp;is&nbsp;only&nbsp;used&nbsp;in&nbsp;error<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;messages&nbsp;(if&nbsp;f&nbsp;has&nbsp;no&nbsp;`name'&nbsp;attribute,&nbsp;the&nbsp;string&nbsp;`&lt;???&gt;'&nbsp;is&nbsp;used).<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;read_string(string)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Read&nbsp;configuration&nbsp;from&nbsp;a&nbsp;given&nbsp;string.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;read_dict(dictionary)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Read&nbsp;configuration&nbsp;from&nbsp;a&nbsp;dictionary.&nbsp;Keys&nbsp;are&nbsp;section&nbsp;names,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;values&nbsp;are&nbsp;dictionaries&nbsp;with&nbsp;keys&nbsp;and&nbsp;values&nbsp;that&nbsp;should&nbsp;be&nbsp;present<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in&nbsp;the&nbsp;section.&nbsp;If&nbsp;the&nbsp;used&nbsp;dictionary&nbsp;type&nbsp;preserves&nbsp;order,&nbsp;sections<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and&nbsp;their&nbsp;keys&nbsp;will&nbsp;be&nbsp;added&nbsp;in&nbsp;order.&nbsp;Values&nbsp;are&nbsp;automatically<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;converted&nbsp;to&nbsp;strings.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;get(section,&nbsp;option,&nbsp;raw=False,&nbsp;vars=None,&nbsp;fallback=_UNSET)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Return&nbsp;a&nbsp;string&nbsp;value&nbsp;for&nbsp;the&nbsp;named&nbsp;option.&nbsp;&nbsp;All&nbsp;%&nbsp;interpolations&nbsp;are<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;expanded&nbsp;in&nbsp;the&nbsp;return&nbsp;values,&nbsp;based&nbsp;on&nbsp;the&nbsp;defaults&nbsp;passed&nbsp;into&nbsp;the<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constructor&nbsp;and&nbsp;the&nbsp;DEFAULT&nbsp;section.&nbsp;&nbsp;Additional&nbsp;substitutions&nbsp;may&nbsp;be<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;provided&nbsp;using&nbsp;the&nbsp;`vars'&nbsp;argument,&nbsp;which&nbsp;must&nbsp;be&nbsp;a&nbsp;dictionary&nbsp;whose<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;contents&nbsp;override&nbsp;any&nbsp;pre-existing&nbsp;defaults.&nbsp;If&nbsp;`option'&nbsp;is&nbsp;a&nbsp;key&nbsp;in<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`vars',&nbsp;the&nbsp;value&nbsp;from&nbsp;`vars'&nbsp;is&nbsp;used.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;getint(section,&nbsp;options,&nbsp;raw=False,&nbsp;vars=None,&nbsp;fallback=_UNSET)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Like&nbsp;get(),&nbsp;but&nbsp;convert&nbsp;value&nbsp;to&nbsp;an&nbsp;integer.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;getfloat(section,&nbsp;options,&nbsp;raw=False,&nbsp;vars=None,&nbsp;fallback=_UNSET)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Like&nbsp;get(),&nbsp;but&nbsp;convert&nbsp;value&nbsp;to&nbsp;a&nbsp;float.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;getboolean(section,&nbsp;options,&nbsp;raw=False,&nbsp;vars=None,&nbsp;fallback=_UNSET)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Like&nbsp;get(),&nbsp;but&nbsp;convert&nbsp;value&nbsp;to&nbsp;a&nbsp;boolean&nbsp;(currently&nbsp;case<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;insensitively&nbsp;defined&nbsp;as&nbsp;0,&nbsp;false,&nbsp;no,&nbsp;off&nbsp;for&nbsp;False,&nbsp;and&nbsp;1,&nbsp;true,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;yes,&nbsp;on&nbsp;for&nbsp;True).&nbsp;&nbsp;Returns&nbsp;False&nbsp;or&nbsp;True.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;items(section=_UNSET,&nbsp;raw=False,&nbsp;vars=None)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If&nbsp;section&nbsp;is&nbsp;given,&nbsp;return&nbsp;a&nbsp;list&nbsp;of&nbsp;tuples&nbsp;with&nbsp;(name,&nbsp;value)&nbsp;for<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;each&nbsp;option&nbsp;in&nbsp;the&nbsp;section.&nbsp;Otherwise,&nbsp;return&nbsp;a&nbsp;list&nbsp;of&nbsp;tuples&nbsp;with<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(section_name,&nbsp;section_proxy)&nbsp;for&nbsp;each&nbsp;section,&nbsp;including&nbsp;DEFAULTSECT.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;remove_section(section)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Remove&nbsp;the&nbsp;given&nbsp;file&nbsp;section&nbsp;and&nbsp;all&nbsp;its&nbsp;options.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;remove_option(section,&nbsp;option)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Remove&nbsp;the&nbsp;given&nbsp;option&nbsp;from&nbsp;the&nbsp;given&nbsp;section.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;set(section,&nbsp;option,&nbsp;value)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set&nbsp;the&nbsp;given&nbsp;option.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;write(fp,&nbsp;space_around_delimiters=True)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Write&nbsp;the&nbsp;configuration&nbsp;state&nbsp;in&nbsp;.ini&nbsp;format.&nbsp;If<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`space_around_delimiters'&nbsp;is&nbsp;True&nbsp;(the&nbsp;default),&nbsp;delimiters<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;between&nbsp;keys&nbsp;and&nbsp;values&nbsp;are&nbsp;surrounded&nbsp;by&nbsp;spaces.</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="functools.html">functools</a><br>
+<a href="io.html">io</a><br>
+</td><td width="25%" valign=top><a href="itertools.html">itertools</a><br>
+<a href="re.html">re</a><br>
+</td><td width="25%" valign=top><a href="sys.html">sys</a><br>
+<a href="warnings.html">warnings</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="_abcoll.html#MutableMapping">_abcoll.MutableMapping</a>(<a href="_abcoll.html#Mapping">_abcoll.Mapping</a>)
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="configparser.html#RawConfigParser">RawConfigParser</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="configparser.html#ConfigParser">ConfigParser</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="configparser.html#SafeConfigParser">SafeConfigParser</a>
+</font></dt></dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt><font face="helvetica, arial"><a href="configparser.html#Error">Error</a>(<a href="builtins.html#Exception">builtins.Exception</a>)
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="configparser.html#DuplicateOptionError">DuplicateOptionError</a>
+</font></dt><dt><font face="helvetica, arial"><a href="configparser.html#DuplicateSectionError">DuplicateSectionError</a>
+</font></dt><dt><font face="helvetica, arial"><a href="configparser.html#InterpolationError">InterpolationError</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="configparser.html#InterpolationDepthError">InterpolationDepthError</a>
+</font></dt><dt><font face="helvetica, arial"><a href="configparser.html#InterpolationSyntaxError">InterpolationSyntaxError</a>
+</font></dt></dl>
+</dd>
+<dt><font face="helvetica, arial"><a href="configparser.html#NoOptionError">NoOptionError</a>
+</font></dt><dt><font face="helvetica, arial"><a href="configparser.html#NoSectionError">NoSectionError</a>
+</font></dt><dt><font face="helvetica, arial"><a href="configparser.html#ParsingError">ParsingError</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="configparser.html#MissingSectionHeaderError">MissingSectionHeaderError</a>
+</font></dt></dl>
+</dd>
+</dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="ConfigParser">class <strong>ConfigParser</strong></a>(<a href="configparser.html#RawConfigParser">RawConfigParser</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#ConfigParser">ConfigParser</a>&nbsp;implementing&nbsp;interpolation.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="configparser.html#ConfigParser">ConfigParser</a></dd>
+<dd><a href="configparser.html#RawConfigParser">RawConfigParser</a></dd>
+<dd><a href="_abcoll.html#MutableMapping">_abcoll.MutableMapping</a></dd>
+<dd><a href="_abcoll.html#Mapping">_abcoll.Mapping</a></dd>
+<dd><a href="_abcoll.html#Sized">_abcoll.Sized</a></dd>
+<dd><a href="_abcoll.html#Iterable">_abcoll.Iterable</a></dd>
+<dd><a href="_abcoll.html#Container">_abcoll.Container</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="ConfigParser-add_section"><strong>add_section</strong></a>(self, section)</dt><dd><tt>Create&nbsp;a&nbsp;new&nbsp;section&nbsp;in&nbsp;the&nbsp;configuration.&nbsp;&nbsp;Extends<br>
+<a href="#RawConfigParser">RawConfigParser</a>.add_section&nbsp;by&nbsp;validating&nbsp;if&nbsp;the&nbsp;section&nbsp;name&nbsp;is<br>
+a&nbsp;string.</tt></dd></dl>
+
+<dl><dt><a name="ConfigParser-set"><strong>set</strong></a>(self, section, option, value<font color="#909090">=None</font>)</dt><dd><tt>Set&nbsp;an&nbsp;option.&nbsp;&nbsp;Extends&nbsp;<a href="#RawConfigParser">RawConfigParser</a>.set&nbsp;by&nbsp;validating&nbsp;type&nbsp;and<br>
+interpolation&nbsp;syntax&nbsp;on&nbsp;the&nbsp;value.</tt></dd></dl>
+
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__abstractmethods__</strong> = frozenset([])</dl>
+
+<hr>
+Methods inherited from <a href="configparser.html#RawConfigParser">RawConfigParser</a>:<br>
+<dl><dt><a name="ConfigParser-__contains__"><strong>__contains__</strong></a>(self, key)</dt></dl>
+
+<dl><dt><a name="ConfigParser-__delitem__"><strong>__delitem__</strong></a>(self, key)</dt></dl>
+
+<dl><dt><a name="ConfigParser-__getitem__"><strong>__getitem__</strong></a>(self, key)</dt></dl>
+
+<dl><dt><a name="ConfigParser-__init__"><strong>__init__</strong></a>(self, defaults<font color="#909090">=None</font>, dict_type<font color="#909090">=&lt;class 'collections.OrderedDict'&gt;</font>, allow_no_value<font color="#909090">=False</font>, *, delimiters<font color="#909090">=('=', ':')</font>, comment_prefixes<font color="#909090">=('#', ';')</font>, inline_comment_prefixes<font color="#909090">=None</font>, strict<font color="#909090">=True</font>, empty_lines_in_values<font color="#909090">=True</font>, default_section<font color="#909090">='DEFAULT'</font>, interpolation<font color="#909090">=&lt;object object&gt;</font>)</dt></dl>
+
+<dl><dt><a name="ConfigParser-__iter__"><strong>__iter__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="ConfigParser-__len__"><strong>__len__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="ConfigParser-__setitem__"><strong>__setitem__</strong></a>(self, key, value)</dt></dl>
+
+<dl><dt><a name="ConfigParser-defaults"><strong>defaults</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="ConfigParser-get"><strong>get</strong></a>(self, section, option, *, raw<font color="#909090">=False</font>, vars<font color="#909090">=None</font>, fallback<font color="#909090">=&lt;object object&gt;</font>)</dt><dd><tt>Get&nbsp;an&nbsp;option&nbsp;value&nbsp;for&nbsp;a&nbsp;given&nbsp;section.<br>
+&nbsp;<br>
+If&nbsp;`vars'&nbsp;is&nbsp;provided,&nbsp;it&nbsp;must&nbsp;be&nbsp;a&nbsp;dictionary.&nbsp;The&nbsp;option&nbsp;is&nbsp;looked&nbsp;up<br>
+in&nbsp;`vars'&nbsp;(if&nbsp;provided),&nbsp;`section',&nbsp;and&nbsp;in&nbsp;`DEFAULTSECT'&nbsp;in&nbsp;that&nbsp;order.<br>
+If&nbsp;the&nbsp;key&nbsp;is&nbsp;not&nbsp;found&nbsp;and&nbsp;`fallback'&nbsp;is&nbsp;provided,&nbsp;it&nbsp;is&nbsp;used&nbsp;as<br>
+a&nbsp;fallback&nbsp;value.&nbsp;`None'&nbsp;can&nbsp;be&nbsp;provided&nbsp;as&nbsp;a&nbsp;`fallback'&nbsp;value.<br>
+&nbsp;<br>
+If&nbsp;interpolation&nbsp;is&nbsp;enabled&nbsp;and&nbsp;the&nbsp;optional&nbsp;argument&nbsp;`raw'&nbsp;is&nbsp;False,<br>
+all&nbsp;interpolations&nbsp;are&nbsp;expanded&nbsp;in&nbsp;the&nbsp;return&nbsp;values.<br>
+&nbsp;<br>
+Arguments&nbsp;`raw',&nbsp;`vars',&nbsp;and&nbsp;`fallback'&nbsp;are&nbsp;keyword&nbsp;only.<br>
+&nbsp;<br>
+The&nbsp;section&nbsp;DEFAULT&nbsp;is&nbsp;special.</tt></dd></dl>
+
+<dl><dt><a name="ConfigParser-getboolean"><strong>getboolean</strong></a>(self, section, option, *, raw<font color="#909090">=False</font>, vars<font color="#909090">=None</font>, fallback<font color="#909090">=&lt;object object&gt;</font>)</dt></dl>
+
+<dl><dt><a name="ConfigParser-getfloat"><strong>getfloat</strong></a>(self, section, option, *, raw<font color="#909090">=False</font>, vars<font color="#909090">=None</font>, fallback<font color="#909090">=&lt;object object&gt;</font>)</dt></dl>
+
+<dl><dt><a name="ConfigParser-getint"><strong>getint</strong></a>(self, section, option, *, raw<font color="#909090">=False</font>, vars<font color="#909090">=None</font>, fallback<font color="#909090">=&lt;object object&gt;</font>)</dt></dl>
+
+<dl><dt><a name="ConfigParser-has_option"><strong>has_option</strong></a>(self, section, option)</dt><dd><tt>Check&nbsp;for&nbsp;the&nbsp;existence&nbsp;of&nbsp;a&nbsp;given&nbsp;option&nbsp;in&nbsp;a&nbsp;given&nbsp;section.<br>
+If&nbsp;the&nbsp;specified&nbsp;`section'&nbsp;is&nbsp;None&nbsp;or&nbsp;an&nbsp;empty&nbsp;string,&nbsp;DEFAULT&nbsp;is<br>
+assumed.&nbsp;If&nbsp;the&nbsp;specified&nbsp;`section'&nbsp;does&nbsp;not&nbsp;exist,&nbsp;returns&nbsp;False.</tt></dd></dl>
+
+<dl><dt><a name="ConfigParser-has_section"><strong>has_section</strong></a>(self, section)</dt><dd><tt>Indicate&nbsp;whether&nbsp;the&nbsp;named&nbsp;section&nbsp;is&nbsp;present&nbsp;in&nbsp;the&nbsp;configuration.<br>
+&nbsp;<br>
+The&nbsp;DEFAULT&nbsp;section&nbsp;is&nbsp;not&nbsp;acknowledged.</tt></dd></dl>
+
+<dl><dt><a name="ConfigParser-items"><strong>items</strong></a>(self, section<font color="#909090">=&lt;object object&gt;</font>, raw<font color="#909090">=False</font>, vars<font color="#909090">=None</font>)</dt><dd><tt>Return&nbsp;a&nbsp;list&nbsp;of&nbsp;(name,&nbsp;value)&nbsp;tuples&nbsp;for&nbsp;each&nbsp;option&nbsp;in&nbsp;a&nbsp;section.<br>
+&nbsp;<br>
+All&nbsp;%&nbsp;interpolations&nbsp;are&nbsp;expanded&nbsp;in&nbsp;the&nbsp;return&nbsp;values,&nbsp;based&nbsp;on&nbsp;the<br>
+defaults&nbsp;passed&nbsp;into&nbsp;the&nbsp;constructor,&nbsp;unless&nbsp;the&nbsp;optional&nbsp;argument<br>
+`raw'&nbsp;is&nbsp;true.&nbsp;&nbsp;Additional&nbsp;substitutions&nbsp;may&nbsp;be&nbsp;provided&nbsp;using&nbsp;the<br>
+`vars'&nbsp;argument,&nbsp;which&nbsp;must&nbsp;be&nbsp;a&nbsp;dictionary&nbsp;whose&nbsp;contents&nbsp;overrides<br>
+any&nbsp;pre-existing&nbsp;defaults.<br>
+&nbsp;<br>
+The&nbsp;section&nbsp;DEFAULT&nbsp;is&nbsp;special.</tt></dd></dl>
+
+<dl><dt><a name="ConfigParser-options"><strong>options</strong></a>(self, section)</dt><dd><tt>Return&nbsp;a&nbsp;list&nbsp;of&nbsp;option&nbsp;names&nbsp;for&nbsp;the&nbsp;given&nbsp;section&nbsp;name.</tt></dd></dl>
+
+<dl><dt><a name="ConfigParser-optionxform"><strong>optionxform</strong></a>(self, optionstr)</dt></dl>
+
+<dl><dt><a name="ConfigParser-popitem"><strong>popitem</strong></a>(self)</dt><dd><tt>Remove&nbsp;a&nbsp;section&nbsp;from&nbsp;the&nbsp;parser&nbsp;and&nbsp;return&nbsp;it&nbsp;as<br>
+a&nbsp;(section_name,&nbsp;section_proxy)&nbsp;tuple.&nbsp;If&nbsp;no&nbsp;section&nbsp;is&nbsp;present,&nbsp;raise<br>
+KeyError.<br>
+&nbsp;<br>
+The&nbsp;section&nbsp;DEFAULT&nbsp;is&nbsp;never&nbsp;returned&nbsp;because&nbsp;it&nbsp;cannot&nbsp;be&nbsp;removed.</tt></dd></dl>
+
+<dl><dt><a name="ConfigParser-read"><strong>read</strong></a>(self, filenames, encoding<font color="#909090">=None</font>)</dt><dd><tt>Read&nbsp;and&nbsp;parse&nbsp;a&nbsp;filename&nbsp;or&nbsp;a&nbsp;list&nbsp;of&nbsp;filenames.<br>
+&nbsp;<br>
+Files&nbsp;that&nbsp;cannot&nbsp;be&nbsp;opened&nbsp;are&nbsp;silently&nbsp;ignored;&nbsp;this&nbsp;is<br>
+designed&nbsp;so&nbsp;that&nbsp;you&nbsp;can&nbsp;specify&nbsp;a&nbsp;list&nbsp;of&nbsp;potential<br>
+configuration&nbsp;file&nbsp;locations&nbsp;(e.g.&nbsp;current&nbsp;directory,&nbsp;user's<br>
+home&nbsp;directory,&nbsp;systemwide&nbsp;directory),&nbsp;and&nbsp;all&nbsp;existing<br>
+configuration&nbsp;files&nbsp;in&nbsp;the&nbsp;list&nbsp;will&nbsp;be&nbsp;read.&nbsp;&nbsp;A&nbsp;single<br>
+filename&nbsp;may&nbsp;also&nbsp;be&nbsp;given.<br>
+&nbsp;<br>
+Return&nbsp;list&nbsp;of&nbsp;successfully&nbsp;read&nbsp;files.</tt></dd></dl>
+
+<dl><dt><a name="ConfigParser-read_dict"><strong>read_dict</strong></a>(self, dictionary, source<font color="#909090">='&lt;dict&gt;'</font>)</dt><dd><tt>Read&nbsp;configuration&nbsp;from&nbsp;a&nbsp;dictionary.<br>
+&nbsp;<br>
+Keys&nbsp;are&nbsp;section&nbsp;names,&nbsp;values&nbsp;are&nbsp;dictionaries&nbsp;with&nbsp;keys&nbsp;and&nbsp;values<br>
+that&nbsp;should&nbsp;be&nbsp;present&nbsp;in&nbsp;the&nbsp;section.&nbsp;If&nbsp;the&nbsp;used&nbsp;dictionary&nbsp;type<br>
+preserves&nbsp;order,&nbsp;sections&nbsp;and&nbsp;their&nbsp;keys&nbsp;will&nbsp;be&nbsp;added&nbsp;in&nbsp;order.<br>
+&nbsp;<br>
+All&nbsp;types&nbsp;held&nbsp;in&nbsp;the&nbsp;dictionary&nbsp;are&nbsp;converted&nbsp;to&nbsp;strings&nbsp;during<br>
+reading,&nbsp;including&nbsp;section&nbsp;names,&nbsp;option&nbsp;names&nbsp;and&nbsp;keys.<br>
+&nbsp;<br>
+Optional&nbsp;second&nbsp;argument&nbsp;is&nbsp;the&nbsp;`source'&nbsp;specifying&nbsp;the&nbsp;name&nbsp;of&nbsp;the<br>
+dictionary&nbsp;being&nbsp;read.</tt></dd></dl>
+
+<dl><dt><a name="ConfigParser-read_file"><strong>read_file</strong></a>(self, f, source<font color="#909090">=None</font>)</dt><dd><tt>Like&nbsp;<a href="#ConfigParser-read">read</a>()&nbsp;but&nbsp;the&nbsp;argument&nbsp;must&nbsp;be&nbsp;a&nbsp;file-like&nbsp;object.<br>
+&nbsp;<br>
+The&nbsp;`f'&nbsp;argument&nbsp;must&nbsp;be&nbsp;iterable,&nbsp;returning&nbsp;one&nbsp;line&nbsp;at&nbsp;a&nbsp;time.<br>
+Optional&nbsp;second&nbsp;argument&nbsp;is&nbsp;the&nbsp;`source'&nbsp;specifying&nbsp;the&nbsp;name&nbsp;of&nbsp;the<br>
+file&nbsp;being&nbsp;read.&nbsp;If&nbsp;not&nbsp;given,&nbsp;it&nbsp;is&nbsp;taken&nbsp;from&nbsp;f.name.&nbsp;If&nbsp;`f'&nbsp;has&nbsp;no<br>
+`name'&nbsp;attribute,&nbsp;`&lt;???&gt;'&nbsp;is&nbsp;used.</tt></dd></dl>
+
+<dl><dt><a name="ConfigParser-read_string"><strong>read_string</strong></a>(self, string, source<font color="#909090">='&lt;string&gt;'</font>)</dt><dd><tt>Read&nbsp;configuration&nbsp;from&nbsp;a&nbsp;given&nbsp;string.</tt></dd></dl>
+
+<dl><dt><a name="ConfigParser-readfp"><strong>readfp</strong></a>(self, fp, filename<font color="#909090">=None</font>)</dt><dd><tt>Deprecated,&nbsp;use&nbsp;read_file&nbsp;instead.</tt></dd></dl>
+
+<dl><dt><a name="ConfigParser-remove_option"><strong>remove_option</strong></a>(self, section, option)</dt><dd><tt>Remove&nbsp;an&nbsp;option.</tt></dd></dl>
+
+<dl><dt><a name="ConfigParser-remove_section"><strong>remove_section</strong></a>(self, section)</dt><dd><tt>Remove&nbsp;a&nbsp;file&nbsp;section.</tt></dd></dl>
+
+<dl><dt><a name="ConfigParser-sections"><strong>sections</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;list&nbsp;of&nbsp;section&nbsp;names,&nbsp;excluding&nbsp;[DEFAULT]</tt></dd></dl>
+
+<dl><dt><a name="ConfigParser-write"><strong>write</strong></a>(self, fp, space_around_delimiters<font color="#909090">=True</font>)</dt><dd><tt>Write&nbsp;an&nbsp;.ini-format&nbsp;representation&nbsp;of&nbsp;the&nbsp;configuration&nbsp;state.<br>
+&nbsp;<br>
+If&nbsp;`space_around_delimiters'&nbsp;is&nbsp;True&nbsp;(the&nbsp;default),&nbsp;delimiters<br>
+between&nbsp;keys&nbsp;and&nbsp;values&nbsp;are&nbsp;surrounded&nbsp;by&nbsp;spaces.</tt></dd></dl>
+
+<hr>
+Data and other attributes inherited from <a href="configparser.html#RawConfigParser">RawConfigParser</a>:<br>
+<dl><dt><strong>BOOLEAN_STATES</strong> = {'0': False, '1': True, 'false': False, 'no': False, 'off': False, 'on': True, 'true': True, 'yes': True}</dl>
+
+<dl><dt><strong>NONSPACECRE</strong> = &lt;_sre.SRE_Pattern object&gt;</dl>
+
+<dl><dt><strong>OPTCRE</strong> = &lt;_sre.SRE_Pattern object&gt;</dl>
+
+<dl><dt><strong>OPTCRE_NV</strong> = &lt;_sre.SRE_Pattern object&gt;</dl>
+
+<dl><dt><strong>SECTCRE</strong> = &lt;_sre.SRE_Pattern object&gt;</dl>
+
+<hr>
+Methods inherited from <a href="_abcoll.html#MutableMapping">_abcoll.MutableMapping</a>:<br>
+<dl><dt><a name="ConfigParser-clear"><strong>clear</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="ConfigParser-pop"><strong>pop</strong></a>(self, key, default<font color="#909090">=&lt;object object&gt;</font>)</dt></dl>
+
+<dl><dt><a name="ConfigParser-setdefault"><strong>setdefault</strong></a>(self, key, default<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="ConfigParser-update"><strong>update</strong></a>(*args, **kwds)</dt></dl>
+
+<hr>
+Methods inherited from <a href="_abcoll.html#Mapping">_abcoll.Mapping</a>:<br>
+<dl><dt><a name="ConfigParser-__eq__"><strong>__eq__</strong></a>(self, other)</dt></dl>
+
+<dl><dt><a name="ConfigParser-__ne__"><strong>__ne__</strong></a>(self, other)</dt></dl>
+
+<dl><dt><a name="ConfigParser-keys"><strong>keys</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="ConfigParser-values"><strong>values</strong></a>(self)</dt></dl>
+
+<hr>
+Data and other attributes inherited from <a href="_abcoll.html#Mapping">_abcoll.Mapping</a>:<br>
+<dl><dt><strong>__hash__</strong> = None</dl>
+
+<hr>
+Class methods inherited from <a href="_abcoll.html#Sized">_abcoll.Sized</a>:<br>
+<dl><dt><a name="ConfigParser-__subclasshook__"><strong>__subclasshook__</strong></a>(cls, C)<font color="#909090"><font face="helvetica, arial"> from <a href="abc.html#ABCMeta">abc.ABCMeta</a></font></font></dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="_abcoll.html#Sized">_abcoll.Sized</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="DuplicateOptionError">class <strong>DuplicateOptionError</strong></a>(<a href="configparser.html#Error">Error</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>Raised&nbsp;by&nbsp;strict&nbsp;parsers&nbsp;when&nbsp;an&nbsp;option&nbsp;is&nbsp;repeated&nbsp;in&nbsp;an&nbsp;input&nbsp;source.<br>
+&nbsp;<br>
+Current&nbsp;implementation&nbsp;raises&nbsp;this&nbsp;exception&nbsp;only&nbsp;when&nbsp;an&nbsp;option&nbsp;is&nbsp;found<br>
+more&nbsp;than&nbsp;once&nbsp;in&nbsp;a&nbsp;single&nbsp;file,&nbsp;string&nbsp;or&nbsp;dictionary.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="configparser.html#DuplicateOptionError">DuplicateOptionError</a></dd>
+<dd><a href="configparser.html#Error">Error</a></dd>
+<dd><a href="builtins.html#Exception">builtins.Exception</a></dd>
+<dd><a href="builtins.html#BaseException">builtins.BaseException</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="DuplicateOptionError-__init__"><strong>__init__</strong></a>(self, section, option, source<font color="#909090">=None</font>, lineno<font color="#909090">=None</font>)</dt></dl>
+
+<hr>
+Methods inherited from <a href="configparser.html#Error">Error</a>:<br>
+<dl><dt><a name="DuplicateOptionError-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="DuplicateOptionError-__str__"><strong>__str__</strong></a> = __repr__(self)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="configparser.html#Error">Error</a>:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>message</strong></dt>
+<dd><tt>Getter&nbsp;for&nbsp;'message';&nbsp;needed&nbsp;only&nbsp;to&nbsp;override&nbsp;deprecation&nbsp;in<br>
+BaseException.</tt></dd>
+</dl>
+<hr>
+Data and other attributes inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><strong>__new__</strong> = &lt;built-in method __new__ of type object&gt;<dd><tt>T.<a href="#DuplicateOptionError-__new__">__new__</a>(S,&nbsp;...)&nbsp;-&gt;&nbsp;a&nbsp;new&nbsp;object&nbsp;with&nbsp;type&nbsp;S,&nbsp;a&nbsp;subtype&nbsp;of&nbsp;T</tt></dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><a name="DuplicateOptionError-__delattr__"><strong>__delattr__</strong></a>(...)</dt><dd><tt>x.<a href="#DuplicateOptionError-__delattr__">__delattr__</a>('name')&nbsp;&lt;==&gt;&nbsp;del&nbsp;x.name</tt></dd></dl>
+
+<dl><dt><a name="DuplicateOptionError-__getattribute__"><strong>__getattribute__</strong></a>(...)</dt><dd><tt>x.<a href="#DuplicateOptionError-__getattribute__">__getattribute__</a>('name')&nbsp;&lt;==&gt;&nbsp;x.name</tt></dd></dl>
+
+<dl><dt><a name="DuplicateOptionError-__reduce__"><strong>__reduce__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="DuplicateOptionError-__setattr__"><strong>__setattr__</strong></a>(...)</dt><dd><tt>x.<a href="#DuplicateOptionError-__setattr__">__setattr__</a>('name',&nbsp;value)&nbsp;&lt;==&gt;&nbsp;x.name&nbsp;=&nbsp;value</tt></dd></dl>
+
+<dl><dt><a name="DuplicateOptionError-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="DuplicateOptionError-with_traceback"><strong>with_traceback</strong></a>(...)</dt><dd><tt>Exception.<a href="#DuplicateOptionError-with_traceback">with_traceback</a>(tb)&nbsp;--<br>
+set&nbsp;self.<strong>__traceback__</strong>&nbsp;to&nbsp;tb&nbsp;and&nbsp;return&nbsp;self.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><strong>__cause__</strong></dt>
+<dd><tt>exception&nbsp;cause</tt></dd>
+</dl>
+<dl><dt><strong>__context__</strong></dt>
+<dd><tt>exception&nbsp;context</tt></dd>
+</dl>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>__traceback__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="DuplicateSectionError">class <strong>DuplicateSectionError</strong></a>(<a href="configparser.html#Error">Error</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>Raised&nbsp;when&nbsp;a&nbsp;section&nbsp;is&nbsp;repeated&nbsp;in&nbsp;an&nbsp;input&nbsp;source.<br>
+&nbsp;<br>
+Possible&nbsp;repetitions&nbsp;that&nbsp;raise&nbsp;this&nbsp;exception&nbsp;are:&nbsp;multiple&nbsp;creation<br>
+using&nbsp;the&nbsp;API&nbsp;or&nbsp;in&nbsp;strict&nbsp;parsers&nbsp;when&nbsp;a&nbsp;section&nbsp;is&nbsp;found&nbsp;more&nbsp;than&nbsp;once<br>
+in&nbsp;a&nbsp;single&nbsp;input&nbsp;file,&nbsp;string&nbsp;or&nbsp;dictionary.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="configparser.html#DuplicateSectionError">DuplicateSectionError</a></dd>
+<dd><a href="configparser.html#Error">Error</a></dd>
+<dd><a href="builtins.html#Exception">builtins.Exception</a></dd>
+<dd><a href="builtins.html#BaseException">builtins.BaseException</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="DuplicateSectionError-__init__"><strong>__init__</strong></a>(self, section, source<font color="#909090">=None</font>, lineno<font color="#909090">=None</font>)</dt></dl>
+
+<hr>
+Methods inherited from <a href="configparser.html#Error">Error</a>:<br>
+<dl><dt><a name="DuplicateSectionError-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="DuplicateSectionError-__str__"><strong>__str__</strong></a> = __repr__(self)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="configparser.html#Error">Error</a>:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>message</strong></dt>
+<dd><tt>Getter&nbsp;for&nbsp;'message';&nbsp;needed&nbsp;only&nbsp;to&nbsp;override&nbsp;deprecation&nbsp;in<br>
+BaseException.</tt></dd>
+</dl>
+<hr>
+Data and other attributes inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><strong>__new__</strong> = &lt;built-in method __new__ of type object&gt;<dd><tt>T.<a href="#DuplicateSectionError-__new__">__new__</a>(S,&nbsp;...)&nbsp;-&gt;&nbsp;a&nbsp;new&nbsp;object&nbsp;with&nbsp;type&nbsp;S,&nbsp;a&nbsp;subtype&nbsp;of&nbsp;T</tt></dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><a name="DuplicateSectionError-__delattr__"><strong>__delattr__</strong></a>(...)</dt><dd><tt>x.<a href="#DuplicateSectionError-__delattr__">__delattr__</a>('name')&nbsp;&lt;==&gt;&nbsp;del&nbsp;x.name</tt></dd></dl>
+
+<dl><dt><a name="DuplicateSectionError-__getattribute__"><strong>__getattribute__</strong></a>(...)</dt><dd><tt>x.<a href="#DuplicateSectionError-__getattribute__">__getattribute__</a>('name')&nbsp;&lt;==&gt;&nbsp;x.name</tt></dd></dl>
+
+<dl><dt><a name="DuplicateSectionError-__reduce__"><strong>__reduce__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="DuplicateSectionError-__setattr__"><strong>__setattr__</strong></a>(...)</dt><dd><tt>x.<a href="#DuplicateSectionError-__setattr__">__setattr__</a>('name',&nbsp;value)&nbsp;&lt;==&gt;&nbsp;x.name&nbsp;=&nbsp;value</tt></dd></dl>
+
+<dl><dt><a name="DuplicateSectionError-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="DuplicateSectionError-with_traceback"><strong>with_traceback</strong></a>(...)</dt><dd><tt>Exception.<a href="#DuplicateSectionError-with_traceback">with_traceback</a>(tb)&nbsp;--<br>
+set&nbsp;self.<strong>__traceback__</strong>&nbsp;to&nbsp;tb&nbsp;and&nbsp;return&nbsp;self.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><strong>__cause__</strong></dt>
+<dd><tt>exception&nbsp;cause</tt></dd>
+</dl>
+<dl><dt><strong>__context__</strong></dt>
+<dd><tt>exception&nbsp;context</tt></dd>
+</dl>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>__traceback__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="InterpolationDepthError">class <strong>InterpolationDepthError</strong></a>(<a href="configparser.html#InterpolationError">InterpolationError</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>Raised&nbsp;when&nbsp;substitutions&nbsp;are&nbsp;nested&nbsp;too&nbsp;deeply.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="configparser.html#InterpolationDepthError">InterpolationDepthError</a></dd>
+<dd><a href="configparser.html#InterpolationError">InterpolationError</a></dd>
+<dd><a href="configparser.html#Error">Error</a></dd>
+<dd><a href="builtins.html#Exception">builtins.Exception</a></dd>
+<dd><a href="builtins.html#BaseException">builtins.BaseException</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="InterpolationDepthError-__init__"><strong>__init__</strong></a>(self, option, section, rawval)</dt></dl>
+
+<hr>
+Methods inherited from <a href="configparser.html#Error">Error</a>:<br>
+<dl><dt><a name="InterpolationDepthError-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="InterpolationDepthError-__str__"><strong>__str__</strong></a> = __repr__(self)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="configparser.html#Error">Error</a>:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>message</strong></dt>
+<dd><tt>Getter&nbsp;for&nbsp;'message';&nbsp;needed&nbsp;only&nbsp;to&nbsp;override&nbsp;deprecation&nbsp;in<br>
+BaseException.</tt></dd>
+</dl>
+<hr>
+Data and other attributes inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><strong>__new__</strong> = &lt;built-in method __new__ of type object&gt;<dd><tt>T.<a href="#InterpolationDepthError-__new__">__new__</a>(S,&nbsp;...)&nbsp;-&gt;&nbsp;a&nbsp;new&nbsp;object&nbsp;with&nbsp;type&nbsp;S,&nbsp;a&nbsp;subtype&nbsp;of&nbsp;T</tt></dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><a name="InterpolationDepthError-__delattr__"><strong>__delattr__</strong></a>(...)</dt><dd><tt>x.<a href="#InterpolationDepthError-__delattr__">__delattr__</a>('name')&nbsp;&lt;==&gt;&nbsp;del&nbsp;x.name</tt></dd></dl>
+
+<dl><dt><a name="InterpolationDepthError-__getattribute__"><strong>__getattribute__</strong></a>(...)</dt><dd><tt>x.<a href="#InterpolationDepthError-__getattribute__">__getattribute__</a>('name')&nbsp;&lt;==&gt;&nbsp;x.name</tt></dd></dl>
+
+<dl><dt><a name="InterpolationDepthError-__reduce__"><strong>__reduce__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="InterpolationDepthError-__setattr__"><strong>__setattr__</strong></a>(...)</dt><dd><tt>x.<a href="#InterpolationDepthError-__setattr__">__setattr__</a>('name',&nbsp;value)&nbsp;&lt;==&gt;&nbsp;x.name&nbsp;=&nbsp;value</tt></dd></dl>
+
+<dl><dt><a name="InterpolationDepthError-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="InterpolationDepthError-with_traceback"><strong>with_traceback</strong></a>(...)</dt><dd><tt>Exception.<a href="#InterpolationDepthError-with_traceback">with_traceback</a>(tb)&nbsp;--<br>
+set&nbsp;self.<strong>__traceback__</strong>&nbsp;to&nbsp;tb&nbsp;and&nbsp;return&nbsp;self.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><strong>__cause__</strong></dt>
+<dd><tt>exception&nbsp;cause</tt></dd>
+</dl>
+<dl><dt><strong>__context__</strong></dt>
+<dd><tt>exception&nbsp;context</tt></dd>
+</dl>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>__traceback__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="InterpolationError">class <strong>InterpolationError</strong></a>(<a href="configparser.html#Error">Error</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>Base&nbsp;class&nbsp;for&nbsp;interpolation-related&nbsp;exceptions.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="configparser.html#InterpolationError">InterpolationError</a></dd>
+<dd><a href="configparser.html#Error">Error</a></dd>
+<dd><a href="builtins.html#Exception">builtins.Exception</a></dd>
+<dd><a href="builtins.html#BaseException">builtins.BaseException</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="InterpolationError-__init__"><strong>__init__</strong></a>(self, option, section, msg)</dt></dl>
+
+<hr>
+Methods inherited from <a href="configparser.html#Error">Error</a>:<br>
+<dl><dt><a name="InterpolationError-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="InterpolationError-__str__"><strong>__str__</strong></a> = __repr__(self)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="configparser.html#Error">Error</a>:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>message</strong></dt>
+<dd><tt>Getter&nbsp;for&nbsp;'message';&nbsp;needed&nbsp;only&nbsp;to&nbsp;override&nbsp;deprecation&nbsp;in<br>
+BaseException.</tt></dd>
+</dl>
+<hr>
+Data and other attributes inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><strong>__new__</strong> = &lt;built-in method __new__ of type object&gt;<dd><tt>T.<a href="#InterpolationError-__new__">__new__</a>(S,&nbsp;...)&nbsp;-&gt;&nbsp;a&nbsp;new&nbsp;object&nbsp;with&nbsp;type&nbsp;S,&nbsp;a&nbsp;subtype&nbsp;of&nbsp;T</tt></dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><a name="InterpolationError-__delattr__"><strong>__delattr__</strong></a>(...)</dt><dd><tt>x.<a href="#InterpolationError-__delattr__">__delattr__</a>('name')&nbsp;&lt;==&gt;&nbsp;del&nbsp;x.name</tt></dd></dl>
+
+<dl><dt><a name="InterpolationError-__getattribute__"><strong>__getattribute__</strong></a>(...)</dt><dd><tt>x.<a href="#InterpolationError-__getattribute__">__getattribute__</a>('name')&nbsp;&lt;==&gt;&nbsp;x.name</tt></dd></dl>
+
+<dl><dt><a name="InterpolationError-__reduce__"><strong>__reduce__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="InterpolationError-__setattr__"><strong>__setattr__</strong></a>(...)</dt><dd><tt>x.<a href="#InterpolationError-__setattr__">__setattr__</a>('name',&nbsp;value)&nbsp;&lt;==&gt;&nbsp;x.name&nbsp;=&nbsp;value</tt></dd></dl>
+
+<dl><dt><a name="InterpolationError-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="InterpolationError-with_traceback"><strong>with_traceback</strong></a>(...)</dt><dd><tt>Exception.<a href="#InterpolationError-with_traceback">with_traceback</a>(tb)&nbsp;--<br>
+set&nbsp;self.<strong>__traceback__</strong>&nbsp;to&nbsp;tb&nbsp;and&nbsp;return&nbsp;self.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><strong>__cause__</strong></dt>
+<dd><tt>exception&nbsp;cause</tt></dd>
+</dl>
+<dl><dt><strong>__context__</strong></dt>
+<dd><tt>exception&nbsp;context</tt></dd>
+</dl>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>__traceback__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="InterpolationSyntaxError">class <strong>InterpolationSyntaxError</strong></a>(<a href="configparser.html#InterpolationError">InterpolationError</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>Raised&nbsp;when&nbsp;the&nbsp;source&nbsp;text&nbsp;contains&nbsp;invalid&nbsp;syntax.<br>
+&nbsp;<br>
+Current&nbsp;implementation&nbsp;raises&nbsp;this&nbsp;exception&nbsp;when&nbsp;the&nbsp;source&nbsp;text&nbsp;into<br>
+which&nbsp;substitutions&nbsp;are&nbsp;made&nbsp;does&nbsp;not&nbsp;conform&nbsp;to&nbsp;the&nbsp;required&nbsp;syntax.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="configparser.html#InterpolationSyntaxError">InterpolationSyntaxError</a></dd>
+<dd><a href="configparser.html#InterpolationError">InterpolationError</a></dd>
+<dd><a href="configparser.html#Error">Error</a></dd>
+<dd><a href="builtins.html#Exception">builtins.Exception</a></dd>
+<dd><a href="builtins.html#BaseException">builtins.BaseException</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods inherited from <a href="configparser.html#InterpolationError">InterpolationError</a>:<br>
+<dl><dt><a name="InterpolationSyntaxError-__init__"><strong>__init__</strong></a>(self, option, section, msg)</dt></dl>
+
+<hr>
+Methods inherited from <a href="configparser.html#Error">Error</a>:<br>
+<dl><dt><a name="InterpolationSyntaxError-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="InterpolationSyntaxError-__str__"><strong>__str__</strong></a> = __repr__(self)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="configparser.html#Error">Error</a>:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>message</strong></dt>
+<dd><tt>Getter&nbsp;for&nbsp;'message';&nbsp;needed&nbsp;only&nbsp;to&nbsp;override&nbsp;deprecation&nbsp;in<br>
+BaseException.</tt></dd>
+</dl>
+<hr>
+Data and other attributes inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><strong>__new__</strong> = &lt;built-in method __new__ of type object&gt;<dd><tt>T.<a href="#InterpolationSyntaxError-__new__">__new__</a>(S,&nbsp;...)&nbsp;-&gt;&nbsp;a&nbsp;new&nbsp;object&nbsp;with&nbsp;type&nbsp;S,&nbsp;a&nbsp;subtype&nbsp;of&nbsp;T</tt></dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><a name="InterpolationSyntaxError-__delattr__"><strong>__delattr__</strong></a>(...)</dt><dd><tt>x.<a href="#InterpolationSyntaxError-__delattr__">__delattr__</a>('name')&nbsp;&lt;==&gt;&nbsp;del&nbsp;x.name</tt></dd></dl>
+
+<dl><dt><a name="InterpolationSyntaxError-__getattribute__"><strong>__getattribute__</strong></a>(...)</dt><dd><tt>x.<a href="#InterpolationSyntaxError-__getattribute__">__getattribute__</a>('name')&nbsp;&lt;==&gt;&nbsp;x.name</tt></dd></dl>
+
+<dl><dt><a name="InterpolationSyntaxError-__reduce__"><strong>__reduce__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="InterpolationSyntaxError-__setattr__"><strong>__setattr__</strong></a>(...)</dt><dd><tt>x.<a href="#InterpolationSyntaxError-__setattr__">__setattr__</a>('name',&nbsp;value)&nbsp;&lt;==&gt;&nbsp;x.name&nbsp;=&nbsp;value</tt></dd></dl>
+
+<dl><dt><a name="InterpolationSyntaxError-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="InterpolationSyntaxError-with_traceback"><strong>with_traceback</strong></a>(...)</dt><dd><tt>Exception.<a href="#InterpolationSyntaxError-with_traceback">with_traceback</a>(tb)&nbsp;--<br>
+set&nbsp;self.<strong>__traceback__</strong>&nbsp;to&nbsp;tb&nbsp;and&nbsp;return&nbsp;self.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><strong>__cause__</strong></dt>
+<dd><tt>exception&nbsp;cause</tt></dd>
+</dl>
+<dl><dt><strong>__context__</strong></dt>
+<dd><tt>exception&nbsp;context</tt></dd>
+</dl>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>__traceback__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="MissingSectionHeaderError">class <strong>MissingSectionHeaderError</strong></a>(<a href="configparser.html#ParsingError">ParsingError</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>Raised&nbsp;when&nbsp;a&nbsp;key-value&nbsp;pair&nbsp;is&nbsp;found&nbsp;before&nbsp;any&nbsp;section&nbsp;header.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="configparser.html#MissingSectionHeaderError">MissingSectionHeaderError</a></dd>
+<dd><a href="configparser.html#ParsingError">ParsingError</a></dd>
+<dd><a href="configparser.html#Error">Error</a></dd>
+<dd><a href="builtins.html#Exception">builtins.Exception</a></dd>
+<dd><a href="builtins.html#BaseException">builtins.BaseException</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="MissingSectionHeaderError-__init__"><strong>__init__</strong></a>(self, filename, lineno, line)</dt></dl>
+
+<hr>
+Methods inherited from <a href="configparser.html#ParsingError">ParsingError</a>:<br>
+<dl><dt><a name="MissingSectionHeaderError-append"><strong>append</strong></a>(self, lineno, line)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="configparser.html#ParsingError">ParsingError</a>:<br>
+<dl><dt><strong>filename</strong></dt>
+<dd><tt>Deprecated,&nbsp;use&nbsp;`source'.</tt></dd>
+</dl>
+<hr>
+Methods inherited from <a href="configparser.html#Error">Error</a>:<br>
+<dl><dt><a name="MissingSectionHeaderError-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="MissingSectionHeaderError-__str__"><strong>__str__</strong></a> = __repr__(self)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="configparser.html#Error">Error</a>:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>message</strong></dt>
+<dd><tt>Getter&nbsp;for&nbsp;'message';&nbsp;needed&nbsp;only&nbsp;to&nbsp;override&nbsp;deprecation&nbsp;in<br>
+BaseException.</tt></dd>
+</dl>
+<hr>
+Data and other attributes inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><strong>__new__</strong> = &lt;built-in method __new__ of type object&gt;<dd><tt>T.<a href="#MissingSectionHeaderError-__new__">__new__</a>(S,&nbsp;...)&nbsp;-&gt;&nbsp;a&nbsp;new&nbsp;object&nbsp;with&nbsp;type&nbsp;S,&nbsp;a&nbsp;subtype&nbsp;of&nbsp;T</tt></dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><a name="MissingSectionHeaderError-__delattr__"><strong>__delattr__</strong></a>(...)</dt><dd><tt>x.<a href="#MissingSectionHeaderError-__delattr__">__delattr__</a>('name')&nbsp;&lt;==&gt;&nbsp;del&nbsp;x.name</tt></dd></dl>
+
+<dl><dt><a name="MissingSectionHeaderError-__getattribute__"><strong>__getattribute__</strong></a>(...)</dt><dd><tt>x.<a href="#MissingSectionHeaderError-__getattribute__">__getattribute__</a>('name')&nbsp;&lt;==&gt;&nbsp;x.name</tt></dd></dl>
+
+<dl><dt><a name="MissingSectionHeaderError-__reduce__"><strong>__reduce__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="MissingSectionHeaderError-__setattr__"><strong>__setattr__</strong></a>(...)</dt><dd><tt>x.<a href="#MissingSectionHeaderError-__setattr__">__setattr__</a>('name',&nbsp;value)&nbsp;&lt;==&gt;&nbsp;x.name&nbsp;=&nbsp;value</tt></dd></dl>
+
+<dl><dt><a name="MissingSectionHeaderError-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="MissingSectionHeaderError-with_traceback"><strong>with_traceback</strong></a>(...)</dt><dd><tt>Exception.<a href="#MissingSectionHeaderError-with_traceback">with_traceback</a>(tb)&nbsp;--<br>
+set&nbsp;self.<strong>__traceback__</strong>&nbsp;to&nbsp;tb&nbsp;and&nbsp;return&nbsp;self.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><strong>__cause__</strong></dt>
+<dd><tt>exception&nbsp;cause</tt></dd>
+</dl>
+<dl><dt><strong>__context__</strong></dt>
+<dd><tt>exception&nbsp;context</tt></dd>
+</dl>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>__traceback__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="NoOptionError">class <strong>NoOptionError</strong></a>(<a href="configparser.html#Error">Error</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>A&nbsp;requested&nbsp;option&nbsp;was&nbsp;not&nbsp;found.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="configparser.html#NoOptionError">NoOptionError</a></dd>
+<dd><a href="configparser.html#Error">Error</a></dd>
+<dd><a href="builtins.html#Exception">builtins.Exception</a></dd>
+<dd><a href="builtins.html#BaseException">builtins.BaseException</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="NoOptionError-__init__"><strong>__init__</strong></a>(self, option, section)</dt></dl>
+
+<hr>
+Methods inherited from <a href="configparser.html#Error">Error</a>:<br>
+<dl><dt><a name="NoOptionError-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="NoOptionError-__str__"><strong>__str__</strong></a> = __repr__(self)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="configparser.html#Error">Error</a>:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>message</strong></dt>
+<dd><tt>Getter&nbsp;for&nbsp;'message';&nbsp;needed&nbsp;only&nbsp;to&nbsp;override&nbsp;deprecation&nbsp;in<br>
+BaseException.</tt></dd>
+</dl>
+<hr>
+Data and other attributes inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><strong>__new__</strong> = &lt;built-in method __new__ of type object&gt;<dd><tt>T.<a href="#NoOptionError-__new__">__new__</a>(S,&nbsp;...)&nbsp;-&gt;&nbsp;a&nbsp;new&nbsp;object&nbsp;with&nbsp;type&nbsp;S,&nbsp;a&nbsp;subtype&nbsp;of&nbsp;T</tt></dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><a name="NoOptionError-__delattr__"><strong>__delattr__</strong></a>(...)</dt><dd><tt>x.<a href="#NoOptionError-__delattr__">__delattr__</a>('name')&nbsp;&lt;==&gt;&nbsp;del&nbsp;x.name</tt></dd></dl>
+
+<dl><dt><a name="NoOptionError-__getattribute__"><strong>__getattribute__</strong></a>(...)</dt><dd><tt>x.<a href="#NoOptionError-__getattribute__">__getattribute__</a>('name')&nbsp;&lt;==&gt;&nbsp;x.name</tt></dd></dl>
+
+<dl><dt><a name="NoOptionError-__reduce__"><strong>__reduce__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="NoOptionError-__setattr__"><strong>__setattr__</strong></a>(...)</dt><dd><tt>x.<a href="#NoOptionError-__setattr__">__setattr__</a>('name',&nbsp;value)&nbsp;&lt;==&gt;&nbsp;x.name&nbsp;=&nbsp;value</tt></dd></dl>
+
+<dl><dt><a name="NoOptionError-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="NoOptionError-with_traceback"><strong>with_traceback</strong></a>(...)</dt><dd><tt>Exception.<a href="#NoOptionError-with_traceback">with_traceback</a>(tb)&nbsp;--<br>
+set&nbsp;self.<strong>__traceback__</strong>&nbsp;to&nbsp;tb&nbsp;and&nbsp;return&nbsp;self.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><strong>__cause__</strong></dt>
+<dd><tt>exception&nbsp;cause</tt></dd>
+</dl>
+<dl><dt><strong>__context__</strong></dt>
+<dd><tt>exception&nbsp;context</tt></dd>
+</dl>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>__traceback__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="NoSectionError">class <strong>NoSectionError</strong></a>(<a href="configparser.html#Error">Error</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>Raised&nbsp;when&nbsp;no&nbsp;section&nbsp;matches&nbsp;a&nbsp;requested&nbsp;option.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="configparser.html#NoSectionError">NoSectionError</a></dd>
+<dd><a href="configparser.html#Error">Error</a></dd>
+<dd><a href="builtins.html#Exception">builtins.Exception</a></dd>
+<dd><a href="builtins.html#BaseException">builtins.BaseException</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="NoSectionError-__init__"><strong>__init__</strong></a>(self, section)</dt></dl>
+
+<hr>
+Methods inherited from <a href="configparser.html#Error">Error</a>:<br>
+<dl><dt><a name="NoSectionError-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="NoSectionError-__str__"><strong>__str__</strong></a> = __repr__(self)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="configparser.html#Error">Error</a>:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>message</strong></dt>
+<dd><tt>Getter&nbsp;for&nbsp;'message';&nbsp;needed&nbsp;only&nbsp;to&nbsp;override&nbsp;deprecation&nbsp;in<br>
+BaseException.</tt></dd>
+</dl>
+<hr>
+Data and other attributes inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><strong>__new__</strong> = &lt;built-in method __new__ of type object&gt;<dd><tt>T.<a href="#NoSectionError-__new__">__new__</a>(S,&nbsp;...)&nbsp;-&gt;&nbsp;a&nbsp;new&nbsp;object&nbsp;with&nbsp;type&nbsp;S,&nbsp;a&nbsp;subtype&nbsp;of&nbsp;T</tt></dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><a name="NoSectionError-__delattr__"><strong>__delattr__</strong></a>(...)</dt><dd><tt>x.<a href="#NoSectionError-__delattr__">__delattr__</a>('name')&nbsp;&lt;==&gt;&nbsp;del&nbsp;x.name</tt></dd></dl>
+
+<dl><dt><a name="NoSectionError-__getattribute__"><strong>__getattribute__</strong></a>(...)</dt><dd><tt>x.<a href="#NoSectionError-__getattribute__">__getattribute__</a>('name')&nbsp;&lt;==&gt;&nbsp;x.name</tt></dd></dl>
+
+<dl><dt><a name="NoSectionError-__reduce__"><strong>__reduce__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="NoSectionError-__setattr__"><strong>__setattr__</strong></a>(...)</dt><dd><tt>x.<a href="#NoSectionError-__setattr__">__setattr__</a>('name',&nbsp;value)&nbsp;&lt;==&gt;&nbsp;x.name&nbsp;=&nbsp;value</tt></dd></dl>
+
+<dl><dt><a name="NoSectionError-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="NoSectionError-with_traceback"><strong>with_traceback</strong></a>(...)</dt><dd><tt>Exception.<a href="#NoSectionError-with_traceback">with_traceback</a>(tb)&nbsp;--<br>
+set&nbsp;self.<strong>__traceback__</strong>&nbsp;to&nbsp;tb&nbsp;and&nbsp;return&nbsp;self.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><strong>__cause__</strong></dt>
+<dd><tt>exception&nbsp;cause</tt></dd>
+</dl>
+<dl><dt><strong>__context__</strong></dt>
+<dd><tt>exception&nbsp;context</tt></dd>
+</dl>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>__traceback__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="ParsingError">class <strong>ParsingError</strong></a>(<a href="configparser.html#Error">Error</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>Raised&nbsp;when&nbsp;a&nbsp;configuration&nbsp;file&nbsp;does&nbsp;not&nbsp;follow&nbsp;legal&nbsp;syntax.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="configparser.html#ParsingError">ParsingError</a></dd>
+<dd><a href="configparser.html#Error">Error</a></dd>
+<dd><a href="builtins.html#Exception">builtins.Exception</a></dd>
+<dd><a href="builtins.html#BaseException">builtins.BaseException</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="ParsingError-__init__"><strong>__init__</strong></a>(self, source<font color="#909090">=None</font>, filename<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="ParsingError-append"><strong>append</strong></a>(self, lineno, line)</dt></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>filename</strong></dt>
+<dd><tt>Deprecated,&nbsp;use&nbsp;`source'.</tt></dd>
+</dl>
+<hr>
+Methods inherited from <a href="configparser.html#Error">Error</a>:<br>
+<dl><dt><a name="ParsingError-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="ParsingError-__str__"><strong>__str__</strong></a> = __repr__(self)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="configparser.html#Error">Error</a>:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>message</strong></dt>
+<dd><tt>Getter&nbsp;for&nbsp;'message';&nbsp;needed&nbsp;only&nbsp;to&nbsp;override&nbsp;deprecation&nbsp;in<br>
+BaseException.</tt></dd>
+</dl>
+<hr>
+Data and other attributes inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><strong>__new__</strong> = &lt;built-in method __new__ of type object&gt;<dd><tt>T.<a href="#ParsingError-__new__">__new__</a>(S,&nbsp;...)&nbsp;-&gt;&nbsp;a&nbsp;new&nbsp;object&nbsp;with&nbsp;type&nbsp;S,&nbsp;a&nbsp;subtype&nbsp;of&nbsp;T</tt></dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><a name="ParsingError-__delattr__"><strong>__delattr__</strong></a>(...)</dt><dd><tt>x.<a href="#ParsingError-__delattr__">__delattr__</a>('name')&nbsp;&lt;==&gt;&nbsp;del&nbsp;x.name</tt></dd></dl>
+
+<dl><dt><a name="ParsingError-__getattribute__"><strong>__getattribute__</strong></a>(...)</dt><dd><tt>x.<a href="#ParsingError-__getattribute__">__getattribute__</a>('name')&nbsp;&lt;==&gt;&nbsp;x.name</tt></dd></dl>
+
+<dl><dt><a name="ParsingError-__reduce__"><strong>__reduce__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="ParsingError-__setattr__"><strong>__setattr__</strong></a>(...)</dt><dd><tt>x.<a href="#ParsingError-__setattr__">__setattr__</a>('name',&nbsp;value)&nbsp;&lt;==&gt;&nbsp;x.name&nbsp;=&nbsp;value</tt></dd></dl>
+
+<dl><dt><a name="ParsingError-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="ParsingError-with_traceback"><strong>with_traceback</strong></a>(...)</dt><dd><tt>Exception.<a href="#ParsingError-with_traceback">with_traceback</a>(tb)&nbsp;--<br>
+set&nbsp;self.<strong>__traceback__</strong>&nbsp;to&nbsp;tb&nbsp;and&nbsp;return&nbsp;self.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><strong>__cause__</strong></dt>
+<dd><tt>exception&nbsp;cause</tt></dd>
+</dl>
+<dl><dt><strong>__context__</strong></dt>
+<dd><tt>exception&nbsp;context</tt></dd>
+</dl>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>__traceback__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="RawConfigParser">class <strong>RawConfigParser</strong></a>(<a href="_abcoll.html#MutableMapping">_abcoll.MutableMapping</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#ConfigParser">ConfigParser</a>&nbsp;that&nbsp;does&nbsp;not&nbsp;do&nbsp;interpolation.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="configparser.html#RawConfigParser">RawConfigParser</a></dd>
+<dd><a href="_abcoll.html#MutableMapping">_abcoll.MutableMapping</a></dd>
+<dd><a href="_abcoll.html#Mapping">_abcoll.Mapping</a></dd>
+<dd><a href="_abcoll.html#Sized">_abcoll.Sized</a></dd>
+<dd><a href="_abcoll.html#Iterable">_abcoll.Iterable</a></dd>
+<dd><a href="_abcoll.html#Container">_abcoll.Container</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="RawConfigParser-__contains__"><strong>__contains__</strong></a>(self, key)</dt></dl>
+
+<dl><dt><a name="RawConfigParser-__delitem__"><strong>__delitem__</strong></a>(self, key)</dt></dl>
+
+<dl><dt><a name="RawConfigParser-__getitem__"><strong>__getitem__</strong></a>(self, key)</dt></dl>
+
+<dl><dt><a name="RawConfigParser-__init__"><strong>__init__</strong></a>(self, defaults<font color="#909090">=None</font>, dict_type<font color="#909090">=&lt;class 'collections.OrderedDict'&gt;</font>, allow_no_value<font color="#909090">=False</font>, *, delimiters<font color="#909090">=('=', ':')</font>, comment_prefixes<font color="#909090">=('#', ';')</font>, inline_comment_prefixes<font color="#909090">=None</font>, strict<font color="#909090">=True</font>, empty_lines_in_values<font color="#909090">=True</font>, default_section<font color="#909090">='DEFAULT'</font>, interpolation<font color="#909090">=&lt;object object&gt;</font>)</dt></dl>
+
+<dl><dt><a name="RawConfigParser-__iter__"><strong>__iter__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="RawConfigParser-__len__"><strong>__len__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="RawConfigParser-__setitem__"><strong>__setitem__</strong></a>(self, key, value)</dt></dl>
+
+<dl><dt><a name="RawConfigParser-add_section"><strong>add_section</strong></a>(self, section)</dt><dd><tt>Create&nbsp;a&nbsp;new&nbsp;section&nbsp;in&nbsp;the&nbsp;configuration.<br>
+&nbsp;<br>
+Raise&nbsp;<a href="#DuplicateSectionError">DuplicateSectionError</a>&nbsp;if&nbsp;a&nbsp;section&nbsp;by&nbsp;the&nbsp;specified&nbsp;name<br>
+already&nbsp;exists.&nbsp;Raise&nbsp;ValueError&nbsp;if&nbsp;name&nbsp;is&nbsp;DEFAULT.</tt></dd></dl>
+
+<dl><dt><a name="RawConfigParser-defaults"><strong>defaults</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="RawConfigParser-get"><strong>get</strong></a>(self, section, option, *, raw<font color="#909090">=False</font>, vars<font color="#909090">=None</font>, fallback<font color="#909090">=&lt;object object&gt;</font>)</dt><dd><tt>Get&nbsp;an&nbsp;option&nbsp;value&nbsp;for&nbsp;a&nbsp;given&nbsp;section.<br>
+&nbsp;<br>
+If&nbsp;`vars'&nbsp;is&nbsp;provided,&nbsp;it&nbsp;must&nbsp;be&nbsp;a&nbsp;dictionary.&nbsp;The&nbsp;option&nbsp;is&nbsp;looked&nbsp;up<br>
+in&nbsp;`vars'&nbsp;(if&nbsp;provided),&nbsp;`section',&nbsp;and&nbsp;in&nbsp;`DEFAULTSECT'&nbsp;in&nbsp;that&nbsp;order.<br>
+If&nbsp;the&nbsp;key&nbsp;is&nbsp;not&nbsp;found&nbsp;and&nbsp;`fallback'&nbsp;is&nbsp;provided,&nbsp;it&nbsp;is&nbsp;used&nbsp;as<br>
+a&nbsp;fallback&nbsp;value.&nbsp;`None'&nbsp;can&nbsp;be&nbsp;provided&nbsp;as&nbsp;a&nbsp;`fallback'&nbsp;value.<br>
+&nbsp;<br>
+If&nbsp;interpolation&nbsp;is&nbsp;enabled&nbsp;and&nbsp;the&nbsp;optional&nbsp;argument&nbsp;`raw'&nbsp;is&nbsp;False,<br>
+all&nbsp;interpolations&nbsp;are&nbsp;expanded&nbsp;in&nbsp;the&nbsp;return&nbsp;values.<br>
+&nbsp;<br>
+Arguments&nbsp;`raw',&nbsp;`vars',&nbsp;and&nbsp;`fallback'&nbsp;are&nbsp;keyword&nbsp;only.<br>
+&nbsp;<br>
+The&nbsp;section&nbsp;DEFAULT&nbsp;is&nbsp;special.</tt></dd></dl>
+
+<dl><dt><a name="RawConfigParser-getboolean"><strong>getboolean</strong></a>(self, section, option, *, raw<font color="#909090">=False</font>, vars<font color="#909090">=None</font>, fallback<font color="#909090">=&lt;object object&gt;</font>)</dt></dl>
+
+<dl><dt><a name="RawConfigParser-getfloat"><strong>getfloat</strong></a>(self, section, option, *, raw<font color="#909090">=False</font>, vars<font color="#909090">=None</font>, fallback<font color="#909090">=&lt;object object&gt;</font>)</dt></dl>
+
+<dl><dt><a name="RawConfigParser-getint"><strong>getint</strong></a>(self, section, option, *, raw<font color="#909090">=False</font>, vars<font color="#909090">=None</font>, fallback<font color="#909090">=&lt;object object&gt;</font>)</dt></dl>
+
+<dl><dt><a name="RawConfigParser-has_option"><strong>has_option</strong></a>(self, section, option)</dt><dd><tt>Check&nbsp;for&nbsp;the&nbsp;existence&nbsp;of&nbsp;a&nbsp;given&nbsp;option&nbsp;in&nbsp;a&nbsp;given&nbsp;section.<br>
+If&nbsp;the&nbsp;specified&nbsp;`section'&nbsp;is&nbsp;None&nbsp;or&nbsp;an&nbsp;empty&nbsp;string,&nbsp;DEFAULT&nbsp;is<br>
+assumed.&nbsp;If&nbsp;the&nbsp;specified&nbsp;`section'&nbsp;does&nbsp;not&nbsp;exist,&nbsp;returns&nbsp;False.</tt></dd></dl>
+
+<dl><dt><a name="RawConfigParser-has_section"><strong>has_section</strong></a>(self, section)</dt><dd><tt>Indicate&nbsp;whether&nbsp;the&nbsp;named&nbsp;section&nbsp;is&nbsp;present&nbsp;in&nbsp;the&nbsp;configuration.<br>
+&nbsp;<br>
+The&nbsp;DEFAULT&nbsp;section&nbsp;is&nbsp;not&nbsp;acknowledged.</tt></dd></dl>
+
+<dl><dt><a name="RawConfigParser-items"><strong>items</strong></a>(self, section<font color="#909090">=&lt;object object&gt;</font>, raw<font color="#909090">=False</font>, vars<font color="#909090">=None</font>)</dt><dd><tt>Return&nbsp;a&nbsp;list&nbsp;of&nbsp;(name,&nbsp;value)&nbsp;tuples&nbsp;for&nbsp;each&nbsp;option&nbsp;in&nbsp;a&nbsp;section.<br>
+&nbsp;<br>
+All&nbsp;%&nbsp;interpolations&nbsp;are&nbsp;expanded&nbsp;in&nbsp;the&nbsp;return&nbsp;values,&nbsp;based&nbsp;on&nbsp;the<br>
+defaults&nbsp;passed&nbsp;into&nbsp;the&nbsp;constructor,&nbsp;unless&nbsp;the&nbsp;optional&nbsp;argument<br>
+`raw'&nbsp;is&nbsp;true.&nbsp;&nbsp;Additional&nbsp;substitutions&nbsp;may&nbsp;be&nbsp;provided&nbsp;using&nbsp;the<br>
+`vars'&nbsp;argument,&nbsp;which&nbsp;must&nbsp;be&nbsp;a&nbsp;dictionary&nbsp;whose&nbsp;contents&nbsp;overrides<br>
+any&nbsp;pre-existing&nbsp;defaults.<br>
+&nbsp;<br>
+The&nbsp;section&nbsp;DEFAULT&nbsp;is&nbsp;special.</tt></dd></dl>
+
+<dl><dt><a name="RawConfigParser-options"><strong>options</strong></a>(self, section)</dt><dd><tt>Return&nbsp;a&nbsp;list&nbsp;of&nbsp;option&nbsp;names&nbsp;for&nbsp;the&nbsp;given&nbsp;section&nbsp;name.</tt></dd></dl>
+
+<dl><dt><a name="RawConfigParser-optionxform"><strong>optionxform</strong></a>(self, optionstr)</dt></dl>
+
+<dl><dt><a name="RawConfigParser-popitem"><strong>popitem</strong></a>(self)</dt><dd><tt>Remove&nbsp;a&nbsp;section&nbsp;from&nbsp;the&nbsp;parser&nbsp;and&nbsp;return&nbsp;it&nbsp;as<br>
+a&nbsp;(section_name,&nbsp;section_proxy)&nbsp;tuple.&nbsp;If&nbsp;no&nbsp;section&nbsp;is&nbsp;present,&nbsp;raise<br>
+KeyError.<br>
+&nbsp;<br>
+The&nbsp;section&nbsp;DEFAULT&nbsp;is&nbsp;never&nbsp;returned&nbsp;because&nbsp;it&nbsp;cannot&nbsp;be&nbsp;removed.</tt></dd></dl>
+
+<dl><dt><a name="RawConfigParser-read"><strong>read</strong></a>(self, filenames, encoding<font color="#909090">=None</font>)</dt><dd><tt>Read&nbsp;and&nbsp;parse&nbsp;a&nbsp;filename&nbsp;or&nbsp;a&nbsp;list&nbsp;of&nbsp;filenames.<br>
+&nbsp;<br>
+Files&nbsp;that&nbsp;cannot&nbsp;be&nbsp;opened&nbsp;are&nbsp;silently&nbsp;ignored;&nbsp;this&nbsp;is<br>
+designed&nbsp;so&nbsp;that&nbsp;you&nbsp;can&nbsp;specify&nbsp;a&nbsp;list&nbsp;of&nbsp;potential<br>
+configuration&nbsp;file&nbsp;locations&nbsp;(e.g.&nbsp;current&nbsp;directory,&nbsp;user's<br>
+home&nbsp;directory,&nbsp;systemwide&nbsp;directory),&nbsp;and&nbsp;all&nbsp;existing<br>
+configuration&nbsp;files&nbsp;in&nbsp;the&nbsp;list&nbsp;will&nbsp;be&nbsp;read.&nbsp;&nbsp;A&nbsp;single<br>
+filename&nbsp;may&nbsp;also&nbsp;be&nbsp;given.<br>
+&nbsp;<br>
+Return&nbsp;list&nbsp;of&nbsp;successfully&nbsp;read&nbsp;files.</tt></dd></dl>
+
+<dl><dt><a name="RawConfigParser-read_dict"><strong>read_dict</strong></a>(self, dictionary, source<font color="#909090">='&lt;dict&gt;'</font>)</dt><dd><tt>Read&nbsp;configuration&nbsp;from&nbsp;a&nbsp;dictionary.<br>
+&nbsp;<br>
+Keys&nbsp;are&nbsp;section&nbsp;names,&nbsp;values&nbsp;are&nbsp;dictionaries&nbsp;with&nbsp;keys&nbsp;and&nbsp;values<br>
+that&nbsp;should&nbsp;be&nbsp;present&nbsp;in&nbsp;the&nbsp;section.&nbsp;If&nbsp;the&nbsp;used&nbsp;dictionary&nbsp;type<br>
+preserves&nbsp;order,&nbsp;sections&nbsp;and&nbsp;their&nbsp;keys&nbsp;will&nbsp;be&nbsp;added&nbsp;in&nbsp;order.<br>
+&nbsp;<br>
+All&nbsp;types&nbsp;held&nbsp;in&nbsp;the&nbsp;dictionary&nbsp;are&nbsp;converted&nbsp;to&nbsp;strings&nbsp;during<br>
+reading,&nbsp;including&nbsp;section&nbsp;names,&nbsp;option&nbsp;names&nbsp;and&nbsp;keys.<br>
+&nbsp;<br>
+Optional&nbsp;second&nbsp;argument&nbsp;is&nbsp;the&nbsp;`source'&nbsp;specifying&nbsp;the&nbsp;name&nbsp;of&nbsp;the<br>
+dictionary&nbsp;being&nbsp;read.</tt></dd></dl>
+
+<dl><dt><a name="RawConfigParser-read_file"><strong>read_file</strong></a>(self, f, source<font color="#909090">=None</font>)</dt><dd><tt>Like&nbsp;<a href="#RawConfigParser-read">read</a>()&nbsp;but&nbsp;the&nbsp;argument&nbsp;must&nbsp;be&nbsp;a&nbsp;file-like&nbsp;object.<br>
+&nbsp;<br>
+The&nbsp;`f'&nbsp;argument&nbsp;must&nbsp;be&nbsp;iterable,&nbsp;returning&nbsp;one&nbsp;line&nbsp;at&nbsp;a&nbsp;time.<br>
+Optional&nbsp;second&nbsp;argument&nbsp;is&nbsp;the&nbsp;`source'&nbsp;specifying&nbsp;the&nbsp;name&nbsp;of&nbsp;the<br>
+file&nbsp;being&nbsp;read.&nbsp;If&nbsp;not&nbsp;given,&nbsp;it&nbsp;is&nbsp;taken&nbsp;from&nbsp;f.name.&nbsp;If&nbsp;`f'&nbsp;has&nbsp;no<br>
+`name'&nbsp;attribute,&nbsp;`&lt;???&gt;'&nbsp;is&nbsp;used.</tt></dd></dl>
+
+<dl><dt><a name="RawConfigParser-read_string"><strong>read_string</strong></a>(self, string, source<font color="#909090">='&lt;string&gt;'</font>)</dt><dd><tt>Read&nbsp;configuration&nbsp;from&nbsp;a&nbsp;given&nbsp;string.</tt></dd></dl>
+
+<dl><dt><a name="RawConfigParser-readfp"><strong>readfp</strong></a>(self, fp, filename<font color="#909090">=None</font>)</dt><dd><tt>Deprecated,&nbsp;use&nbsp;read_file&nbsp;instead.</tt></dd></dl>
+
+<dl><dt><a name="RawConfigParser-remove_option"><strong>remove_option</strong></a>(self, section, option)</dt><dd><tt>Remove&nbsp;an&nbsp;option.</tt></dd></dl>
+
+<dl><dt><a name="RawConfigParser-remove_section"><strong>remove_section</strong></a>(self, section)</dt><dd><tt>Remove&nbsp;a&nbsp;file&nbsp;section.</tt></dd></dl>
+
+<dl><dt><a name="RawConfigParser-sections"><strong>sections</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;list&nbsp;of&nbsp;section&nbsp;names,&nbsp;excluding&nbsp;[DEFAULT]</tt></dd></dl>
+
+<dl><dt><a name="RawConfigParser-set"><strong>set</strong></a>(self, section, option, value<font color="#909090">=None</font>)</dt><dd><tt>Set&nbsp;an&nbsp;option.</tt></dd></dl>
+
+<dl><dt><a name="RawConfigParser-write"><strong>write</strong></a>(self, fp, space_around_delimiters<font color="#909090">=True</font>)</dt><dd><tt>Write&nbsp;an&nbsp;.ini-format&nbsp;representation&nbsp;of&nbsp;the&nbsp;configuration&nbsp;state.<br>
+&nbsp;<br>
+If&nbsp;`space_around_delimiters'&nbsp;is&nbsp;True&nbsp;(the&nbsp;default),&nbsp;delimiters<br>
+between&nbsp;keys&nbsp;and&nbsp;values&nbsp;are&nbsp;surrounded&nbsp;by&nbsp;spaces.</tt></dd></dl>
+
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>BOOLEAN_STATES</strong> = {'0': False, '1': True, 'false': False, 'no': False, 'off': False, 'on': True, 'true': True, 'yes': True}</dl>
+
+<dl><dt><strong>NONSPACECRE</strong> = &lt;_sre.SRE_Pattern object&gt;</dl>
+
+<dl><dt><strong>OPTCRE</strong> = &lt;_sre.SRE_Pattern object&gt;</dl>
+
+<dl><dt><strong>OPTCRE_NV</strong> = &lt;_sre.SRE_Pattern object&gt;</dl>
+
+<dl><dt><strong>SECTCRE</strong> = &lt;_sre.SRE_Pattern object&gt;</dl>
+
+<dl><dt><strong>__abstractmethods__</strong> = frozenset([])</dl>
+
+<hr>
+Methods inherited from <a href="_abcoll.html#MutableMapping">_abcoll.MutableMapping</a>:<br>
+<dl><dt><a name="RawConfigParser-clear"><strong>clear</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="RawConfigParser-pop"><strong>pop</strong></a>(self, key, default<font color="#909090">=&lt;object object&gt;</font>)</dt></dl>
+
+<dl><dt><a name="RawConfigParser-setdefault"><strong>setdefault</strong></a>(self, key, default<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="RawConfigParser-update"><strong>update</strong></a>(*args, **kwds)</dt></dl>
+
+<hr>
+Methods inherited from <a href="_abcoll.html#Mapping">_abcoll.Mapping</a>:<br>
+<dl><dt><a name="RawConfigParser-__eq__"><strong>__eq__</strong></a>(self, other)</dt></dl>
+
+<dl><dt><a name="RawConfigParser-__ne__"><strong>__ne__</strong></a>(self, other)</dt></dl>
+
+<dl><dt><a name="RawConfigParser-keys"><strong>keys</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="RawConfigParser-values"><strong>values</strong></a>(self)</dt></dl>
+
+<hr>
+Data and other attributes inherited from <a href="_abcoll.html#Mapping">_abcoll.Mapping</a>:<br>
+<dl><dt><strong>__hash__</strong> = None</dl>
+
+<hr>
+Class methods inherited from <a href="_abcoll.html#Sized">_abcoll.Sized</a>:<br>
+<dl><dt><a name="RawConfigParser-__subclasshook__"><strong>__subclasshook__</strong></a>(cls, C)<font color="#909090"><font face="helvetica, arial"> from <a href="abc.html#ABCMeta">abc.ABCMeta</a></font></font></dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="_abcoll.html#Sized">_abcoll.Sized</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="SafeConfigParser">class <strong>SafeConfigParser</strong></a>(<a href="configparser.html#ConfigParser">ConfigParser</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#ConfigParser">ConfigParser</a>&nbsp;alias&nbsp;for&nbsp;backwards&nbsp;compatibility&nbsp;purposes.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="configparser.html#SafeConfigParser">SafeConfigParser</a></dd>
+<dd><a href="configparser.html#ConfigParser">ConfigParser</a></dd>
+<dd><a href="configparser.html#RawConfigParser">RawConfigParser</a></dd>
+<dd><a href="_abcoll.html#MutableMapping">_abcoll.MutableMapping</a></dd>
+<dd><a href="_abcoll.html#Mapping">_abcoll.Mapping</a></dd>
+<dd><a href="_abcoll.html#Sized">_abcoll.Sized</a></dd>
+<dd><a href="_abcoll.html#Iterable">_abcoll.Iterable</a></dd>
+<dd><a href="_abcoll.html#Container">_abcoll.Container</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="SafeConfigParser-__init__"><strong>__init__</strong></a>(self, *args, **kwargs)</dt></dl>
+
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__abstractmethods__</strong> = frozenset([])</dl>
+
+<hr>
+Methods inherited from <a href="configparser.html#ConfigParser">ConfigParser</a>:<br>
+<dl><dt><a name="SafeConfigParser-add_section"><strong>add_section</strong></a>(self, section)</dt><dd><tt>Create&nbsp;a&nbsp;new&nbsp;section&nbsp;in&nbsp;the&nbsp;configuration.&nbsp;&nbsp;Extends<br>
+<a href="#RawConfigParser">RawConfigParser</a>.add_section&nbsp;by&nbsp;validating&nbsp;if&nbsp;the&nbsp;section&nbsp;name&nbsp;is<br>
+a&nbsp;string.</tt></dd></dl>
+
+<dl><dt><a name="SafeConfigParser-set"><strong>set</strong></a>(self, section, option, value<font color="#909090">=None</font>)</dt><dd><tt>Set&nbsp;an&nbsp;option.&nbsp;&nbsp;Extends&nbsp;<a href="#RawConfigParser">RawConfigParser</a>.set&nbsp;by&nbsp;validating&nbsp;type&nbsp;and<br>
+interpolation&nbsp;syntax&nbsp;on&nbsp;the&nbsp;value.</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="configparser.html#RawConfigParser">RawConfigParser</a>:<br>
+<dl><dt><a name="SafeConfigParser-__contains__"><strong>__contains__</strong></a>(self, key)</dt></dl>
+
+<dl><dt><a name="SafeConfigParser-__delitem__"><strong>__delitem__</strong></a>(self, key)</dt></dl>
+
+<dl><dt><a name="SafeConfigParser-__getitem__"><strong>__getitem__</strong></a>(self, key)</dt></dl>
+
+<dl><dt><a name="SafeConfigParser-__iter__"><strong>__iter__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="SafeConfigParser-__len__"><strong>__len__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="SafeConfigParser-__setitem__"><strong>__setitem__</strong></a>(self, key, value)</dt></dl>
+
+<dl><dt><a name="SafeConfigParser-defaults"><strong>defaults</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="SafeConfigParser-get"><strong>get</strong></a>(self, section, option, *, raw<font color="#909090">=False</font>, vars<font color="#909090">=None</font>, fallback<font color="#909090">=&lt;object object&gt;</font>)</dt><dd><tt>Get&nbsp;an&nbsp;option&nbsp;value&nbsp;for&nbsp;a&nbsp;given&nbsp;section.<br>
+&nbsp;<br>
+If&nbsp;`vars'&nbsp;is&nbsp;provided,&nbsp;it&nbsp;must&nbsp;be&nbsp;a&nbsp;dictionary.&nbsp;The&nbsp;option&nbsp;is&nbsp;looked&nbsp;up<br>
+in&nbsp;`vars'&nbsp;(if&nbsp;provided),&nbsp;`section',&nbsp;and&nbsp;in&nbsp;`DEFAULTSECT'&nbsp;in&nbsp;that&nbsp;order.<br>
+If&nbsp;the&nbsp;key&nbsp;is&nbsp;not&nbsp;found&nbsp;and&nbsp;`fallback'&nbsp;is&nbsp;provided,&nbsp;it&nbsp;is&nbsp;used&nbsp;as<br>
+a&nbsp;fallback&nbsp;value.&nbsp;`None'&nbsp;can&nbsp;be&nbsp;provided&nbsp;as&nbsp;a&nbsp;`fallback'&nbsp;value.<br>
+&nbsp;<br>
+If&nbsp;interpolation&nbsp;is&nbsp;enabled&nbsp;and&nbsp;the&nbsp;optional&nbsp;argument&nbsp;`raw'&nbsp;is&nbsp;False,<br>
+all&nbsp;interpolations&nbsp;are&nbsp;expanded&nbsp;in&nbsp;the&nbsp;return&nbsp;values.<br>
+&nbsp;<br>
+Arguments&nbsp;`raw',&nbsp;`vars',&nbsp;and&nbsp;`fallback'&nbsp;are&nbsp;keyword&nbsp;only.<br>
+&nbsp;<br>
+The&nbsp;section&nbsp;DEFAULT&nbsp;is&nbsp;special.</tt></dd></dl>
+
+<dl><dt><a name="SafeConfigParser-getboolean"><strong>getboolean</strong></a>(self, section, option, *, raw<font color="#909090">=False</font>, vars<font color="#909090">=None</font>, fallback<font color="#909090">=&lt;object object&gt;</font>)</dt></dl>
+
+<dl><dt><a name="SafeConfigParser-getfloat"><strong>getfloat</strong></a>(self, section, option, *, raw<font color="#909090">=False</font>, vars<font color="#909090">=None</font>, fallback<font color="#909090">=&lt;object object&gt;</font>)</dt></dl>
+
+<dl><dt><a name="SafeConfigParser-getint"><strong>getint</strong></a>(self, section, option, *, raw<font color="#909090">=False</font>, vars<font color="#909090">=None</font>, fallback<font color="#909090">=&lt;object object&gt;</font>)</dt></dl>
+
+<dl><dt><a name="SafeConfigParser-has_option"><strong>has_option</strong></a>(self, section, option)</dt><dd><tt>Check&nbsp;for&nbsp;the&nbsp;existence&nbsp;of&nbsp;a&nbsp;given&nbsp;option&nbsp;in&nbsp;a&nbsp;given&nbsp;section.<br>
+If&nbsp;the&nbsp;specified&nbsp;`section'&nbsp;is&nbsp;None&nbsp;or&nbsp;an&nbsp;empty&nbsp;string,&nbsp;DEFAULT&nbsp;is<br>
+assumed.&nbsp;If&nbsp;the&nbsp;specified&nbsp;`section'&nbsp;does&nbsp;not&nbsp;exist,&nbsp;returns&nbsp;False.</tt></dd></dl>
+
+<dl><dt><a name="SafeConfigParser-has_section"><strong>has_section</strong></a>(self, section)</dt><dd><tt>Indicate&nbsp;whether&nbsp;the&nbsp;named&nbsp;section&nbsp;is&nbsp;present&nbsp;in&nbsp;the&nbsp;configuration.<br>
+&nbsp;<br>
+The&nbsp;DEFAULT&nbsp;section&nbsp;is&nbsp;not&nbsp;acknowledged.</tt></dd></dl>
+
+<dl><dt><a name="SafeConfigParser-items"><strong>items</strong></a>(self, section<font color="#909090">=&lt;object object&gt;</font>, raw<font color="#909090">=False</font>, vars<font color="#909090">=None</font>)</dt><dd><tt>Return&nbsp;a&nbsp;list&nbsp;of&nbsp;(name,&nbsp;value)&nbsp;tuples&nbsp;for&nbsp;each&nbsp;option&nbsp;in&nbsp;a&nbsp;section.<br>
+&nbsp;<br>
+All&nbsp;%&nbsp;interpolations&nbsp;are&nbsp;expanded&nbsp;in&nbsp;the&nbsp;return&nbsp;values,&nbsp;based&nbsp;on&nbsp;the<br>
+defaults&nbsp;passed&nbsp;into&nbsp;the&nbsp;constructor,&nbsp;unless&nbsp;the&nbsp;optional&nbsp;argument<br>
+`raw'&nbsp;is&nbsp;true.&nbsp;&nbsp;Additional&nbsp;substitutions&nbsp;may&nbsp;be&nbsp;provided&nbsp;using&nbsp;the<br>
+`vars'&nbsp;argument,&nbsp;which&nbsp;must&nbsp;be&nbsp;a&nbsp;dictionary&nbsp;whose&nbsp;contents&nbsp;overrides<br>
+any&nbsp;pre-existing&nbsp;defaults.<br>
+&nbsp;<br>
+The&nbsp;section&nbsp;DEFAULT&nbsp;is&nbsp;special.</tt></dd></dl>
+
+<dl><dt><a name="SafeConfigParser-options"><strong>options</strong></a>(self, section)</dt><dd><tt>Return&nbsp;a&nbsp;list&nbsp;of&nbsp;option&nbsp;names&nbsp;for&nbsp;the&nbsp;given&nbsp;section&nbsp;name.</tt></dd></dl>
+
+<dl><dt><a name="SafeConfigParser-optionxform"><strong>optionxform</strong></a>(self, optionstr)</dt></dl>
+
+<dl><dt><a name="SafeConfigParser-popitem"><strong>popitem</strong></a>(self)</dt><dd><tt>Remove&nbsp;a&nbsp;section&nbsp;from&nbsp;the&nbsp;parser&nbsp;and&nbsp;return&nbsp;it&nbsp;as<br>
+a&nbsp;(section_name,&nbsp;section_proxy)&nbsp;tuple.&nbsp;If&nbsp;no&nbsp;section&nbsp;is&nbsp;present,&nbsp;raise<br>
+KeyError.<br>
+&nbsp;<br>
+The&nbsp;section&nbsp;DEFAULT&nbsp;is&nbsp;never&nbsp;returned&nbsp;because&nbsp;it&nbsp;cannot&nbsp;be&nbsp;removed.</tt></dd></dl>
+
+<dl><dt><a name="SafeConfigParser-read"><strong>read</strong></a>(self, filenames, encoding<font color="#909090">=None</font>)</dt><dd><tt>Read&nbsp;and&nbsp;parse&nbsp;a&nbsp;filename&nbsp;or&nbsp;a&nbsp;list&nbsp;of&nbsp;filenames.<br>
+&nbsp;<br>
+Files&nbsp;that&nbsp;cannot&nbsp;be&nbsp;opened&nbsp;are&nbsp;silently&nbsp;ignored;&nbsp;this&nbsp;is<br>
+designed&nbsp;so&nbsp;that&nbsp;you&nbsp;can&nbsp;specify&nbsp;a&nbsp;list&nbsp;of&nbsp;potential<br>
+configuration&nbsp;file&nbsp;locations&nbsp;(e.g.&nbsp;current&nbsp;directory,&nbsp;user's<br>
+home&nbsp;directory,&nbsp;systemwide&nbsp;directory),&nbsp;and&nbsp;all&nbsp;existing<br>
+configuration&nbsp;files&nbsp;in&nbsp;the&nbsp;list&nbsp;will&nbsp;be&nbsp;read.&nbsp;&nbsp;A&nbsp;single<br>
+filename&nbsp;may&nbsp;also&nbsp;be&nbsp;given.<br>
+&nbsp;<br>
+Return&nbsp;list&nbsp;of&nbsp;successfully&nbsp;read&nbsp;files.</tt></dd></dl>
+
+<dl><dt><a name="SafeConfigParser-read_dict"><strong>read_dict</strong></a>(self, dictionary, source<font color="#909090">='&lt;dict&gt;'</font>)</dt><dd><tt>Read&nbsp;configuration&nbsp;from&nbsp;a&nbsp;dictionary.<br>
+&nbsp;<br>
+Keys&nbsp;are&nbsp;section&nbsp;names,&nbsp;values&nbsp;are&nbsp;dictionaries&nbsp;with&nbsp;keys&nbsp;and&nbsp;values<br>
+that&nbsp;should&nbsp;be&nbsp;present&nbsp;in&nbsp;the&nbsp;section.&nbsp;If&nbsp;the&nbsp;used&nbsp;dictionary&nbsp;type<br>
+preserves&nbsp;order,&nbsp;sections&nbsp;and&nbsp;their&nbsp;keys&nbsp;will&nbsp;be&nbsp;added&nbsp;in&nbsp;order.<br>
+&nbsp;<br>
+All&nbsp;types&nbsp;held&nbsp;in&nbsp;the&nbsp;dictionary&nbsp;are&nbsp;converted&nbsp;to&nbsp;strings&nbsp;during<br>
+reading,&nbsp;including&nbsp;section&nbsp;names,&nbsp;option&nbsp;names&nbsp;and&nbsp;keys.<br>
+&nbsp;<br>
+Optional&nbsp;second&nbsp;argument&nbsp;is&nbsp;the&nbsp;`source'&nbsp;specifying&nbsp;the&nbsp;name&nbsp;of&nbsp;the<br>
+dictionary&nbsp;being&nbsp;read.</tt></dd></dl>
+
+<dl><dt><a name="SafeConfigParser-read_file"><strong>read_file</strong></a>(self, f, source<font color="#909090">=None</font>)</dt><dd><tt>Like&nbsp;<a href="#SafeConfigParser-read">read</a>()&nbsp;but&nbsp;the&nbsp;argument&nbsp;must&nbsp;be&nbsp;a&nbsp;file-like&nbsp;object.<br>
+&nbsp;<br>
+The&nbsp;`f'&nbsp;argument&nbsp;must&nbsp;be&nbsp;iterable,&nbsp;returning&nbsp;one&nbsp;line&nbsp;at&nbsp;a&nbsp;time.<br>
+Optional&nbsp;second&nbsp;argument&nbsp;is&nbsp;the&nbsp;`source'&nbsp;specifying&nbsp;the&nbsp;name&nbsp;of&nbsp;the<br>
+file&nbsp;being&nbsp;read.&nbsp;If&nbsp;not&nbsp;given,&nbsp;it&nbsp;is&nbsp;taken&nbsp;from&nbsp;f.name.&nbsp;If&nbsp;`f'&nbsp;has&nbsp;no<br>
+`name'&nbsp;attribute,&nbsp;`&lt;???&gt;'&nbsp;is&nbsp;used.</tt></dd></dl>
+
+<dl><dt><a name="SafeConfigParser-read_string"><strong>read_string</strong></a>(self, string, source<font color="#909090">='&lt;string&gt;'</font>)</dt><dd><tt>Read&nbsp;configuration&nbsp;from&nbsp;a&nbsp;given&nbsp;string.</tt></dd></dl>
+
+<dl><dt><a name="SafeConfigParser-readfp"><strong>readfp</strong></a>(self, fp, filename<font color="#909090">=None</font>)</dt><dd><tt>Deprecated,&nbsp;use&nbsp;read_file&nbsp;instead.</tt></dd></dl>
+
+<dl><dt><a name="SafeConfigParser-remove_option"><strong>remove_option</strong></a>(self, section, option)</dt><dd><tt>Remove&nbsp;an&nbsp;option.</tt></dd></dl>
+
+<dl><dt><a name="SafeConfigParser-remove_section"><strong>remove_section</strong></a>(self, section)</dt><dd><tt>Remove&nbsp;a&nbsp;file&nbsp;section.</tt></dd></dl>
+
+<dl><dt><a name="SafeConfigParser-sections"><strong>sections</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;list&nbsp;of&nbsp;section&nbsp;names,&nbsp;excluding&nbsp;[DEFAULT]</tt></dd></dl>
+
+<dl><dt><a name="SafeConfigParser-write"><strong>write</strong></a>(self, fp, space_around_delimiters<font color="#909090">=True</font>)</dt><dd><tt>Write&nbsp;an&nbsp;.ini-format&nbsp;representation&nbsp;of&nbsp;the&nbsp;configuration&nbsp;state.<br>
+&nbsp;<br>
+If&nbsp;`space_around_delimiters'&nbsp;is&nbsp;True&nbsp;(the&nbsp;default),&nbsp;delimiters<br>
+between&nbsp;keys&nbsp;and&nbsp;values&nbsp;are&nbsp;surrounded&nbsp;by&nbsp;spaces.</tt></dd></dl>
+
+<hr>
+Data and other attributes inherited from <a href="configparser.html#RawConfigParser">RawConfigParser</a>:<br>
+<dl><dt><strong>BOOLEAN_STATES</strong> = {'0': False, '1': True, 'false': False, 'no': False, 'off': False, 'on': True, 'true': True, 'yes': True}</dl>
+
+<dl><dt><strong>NONSPACECRE</strong> = &lt;_sre.SRE_Pattern object&gt;</dl>
+
+<dl><dt><strong>OPTCRE</strong> = &lt;_sre.SRE_Pattern object&gt;</dl>
+
+<dl><dt><strong>OPTCRE_NV</strong> = &lt;_sre.SRE_Pattern object&gt;</dl>
+
+<dl><dt><strong>SECTCRE</strong> = &lt;_sre.SRE_Pattern object&gt;</dl>
+
+<hr>
+Methods inherited from <a href="_abcoll.html#MutableMapping">_abcoll.MutableMapping</a>:<br>
+<dl><dt><a name="SafeConfigParser-clear"><strong>clear</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="SafeConfigParser-pop"><strong>pop</strong></a>(self, key, default<font color="#909090">=&lt;object object&gt;</font>)</dt></dl>
+
+<dl><dt><a name="SafeConfigParser-setdefault"><strong>setdefault</strong></a>(self, key, default<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="SafeConfigParser-update"><strong>update</strong></a>(*args, **kwds)</dt></dl>
+
+<hr>
+Methods inherited from <a href="_abcoll.html#Mapping">_abcoll.Mapping</a>:<br>
+<dl><dt><a name="SafeConfigParser-__eq__"><strong>__eq__</strong></a>(self, other)</dt></dl>
+
+<dl><dt><a name="SafeConfigParser-__ne__"><strong>__ne__</strong></a>(self, other)</dt></dl>
+
+<dl><dt><a name="SafeConfigParser-keys"><strong>keys</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="SafeConfigParser-values"><strong>values</strong></a>(self)</dt></dl>
+
+<hr>
+Data and other attributes inherited from <a href="_abcoll.html#Mapping">_abcoll.Mapping</a>:<br>
+<dl><dt><strong>__hash__</strong> = None</dl>
+
+<hr>
+Class methods inherited from <a href="_abcoll.html#Sized">_abcoll.Sized</a>:<br>
+<dl><dt><a name="SafeConfigParser-__subclasshook__"><strong>__subclasshook__</strong></a>(cls, C)<font color="#909090"><font face="helvetica, arial"> from <a href="abc.html#ABCMeta">abc.ABCMeta</a></font></font></dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="_abcoll.html#Sized">_abcoll.Sized</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>DEFAULTSECT</strong> = 'DEFAULT'<br>
+<strong>MAX_INTERPOLATION_DEPTH</strong> = 10<br>
+<strong>__all__</strong> = ['NoSectionError', 'DuplicateOptionError', 'DuplicateSectionError', 'NoOptionError', 'InterpolationError', 'InterpolationDepthError', 'InterpolationSyntaxError', 'ParsingError', 'MissingSectionHeaderError', 'ConfigParser', 'SafeConfigParser', 'RawConfigParser', 'DEFAULTSECT', 'MAX_INTERPOLATION_DEPTH']</td></tr></table>
+</body></html>
